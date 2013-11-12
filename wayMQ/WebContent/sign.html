@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<script type="text/javascript"
+	src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		$("#text_wait").hide();
+		$("#button_sign").click(function() {
+			$("#text_wait").show();
+
+			var req = new XMLHttpRequest();
+			req.open("", "");
+			req.setRequestHeader("", "");
+			req.send();
+
+		});
+	});
+</script>
+
+</head>
+<body>
+
+	<div>
+		<div>
+
+			<input type="tel" />
+
+			<button id="button_sign">sign</button>
+		</div>
+		<div id="text_wait">waiting...</div>
+	</div>
+
+</body>
+</html>
