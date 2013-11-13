@@ -16,4 +16,6 @@ public interface IJsonRequestContext {
 
 	IDataModel getModel();
 
+	IUser getUser();
+
 }

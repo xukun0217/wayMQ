@@ -1,6 +1,7 @@
 package waymq.servlet;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +13,7 @@ import waymq.DefaultRespDriver;
 import waymq.IJsonRequestContext;
 import waymq.IJsonResponder;
 import waymq.IJsonResponderDriver;
+import waymq.IUser;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -33,8 +35,8 @@ public class Sign extends HttpServlet {
 		_resp = new Proc();
 		_driver = new DefaultRespDriver(_resp);
 
-		_driver.setNeedLogin(true);
-		_driver.setNeedAdmin(true);
+		_driver.setNeedLogin(false);
+		_driver.setNeedAdmin(false);
 
 	}
 
@@ -62,8 +64,47 @@ public class Sign extends HttpServlet {
 
 		@Override
 		public JSONObject proc(IJsonRequestContext context) {
-
+			Map<String, String> req = context.getRequest();
+			String doName = req.get("do");
+			if ("up".equals(doName)) {
+				this.__do_up(context);
+			} else if ("out".equals(doName)) {
+				this.__do_out(context);
+			} else if ("in".equals(doName)) {
+				this.__do_in(context);
+			} else if ("sms".equals(doName)) {
+				this.__do_sms(context);
+			} else /* state */{
+				this.__do_state(context);
+			}
 			return context.getResponse();
+		}
+
+		private void __do_sms(IJsonRequestContext context) {
+			// TODO Auto-generated method stub
+
+		}
+
+		private void __do_in(IJsonRequestContext context) {
+			// TODO Auto-generated method stub
+
+		}
+
+		private void __do_out(IJsonRequestContext context) {
+			// TODO Auto-generated method stub
+
+		}
+
+		private void __do_up(IJsonRequestContext context) {
+			// TODO Auto-generated method stub
+
+		}
+
+		private void __do_state(IJsonRequestContext context) {
+			// TODO Auto-generated method stub
+
+			IUser user = context.getUser();
+
 		}
 
 	}

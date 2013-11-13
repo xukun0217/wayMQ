@@ -16,21 +16,6 @@
 	function doInit() {
 
 		$("#text_wait").hide();
-		$("#button_sign").click(function() {
-
-			$("#text_wait").show();
-
-			var req = mq.request("Sign");
-			req.setParam("do", "state");
-			req.setParam("pn", phone_num );
-		
-			req.send(function(url, json) {
-
-				var str = JSON.stringify(json);
-				alert("REST\nurl = " + url + "\njson = " + str);
-			});
-
-		});
 
 		var req = mq.request("Sign");
 		req.setParam("do", "state");
@@ -38,6 +23,15 @@
 
 			var str = JSON.stringify(json);
 			alert("REST\nurl = " + url + "\njson = " + str);
+
+			var state = json["state"];
+
+			if (state == "on") {
+				var name = json["name"];
+			} else {
+				mq.goto_url("sign_in.html");
+			}
+
 		});
 
 	}
@@ -49,18 +43,12 @@
 	});
 </script>
 
+
 </head>
 <body>
-
-	<div>
-		<div>
-
-			<input type="tel" />
-
-			<button id="button_sign">sign</button>
-		</div>
-		<div id="text_wait">waiting...</div>
-	</div>
-
+	<p>hello, this is wayMQ home</p>
+	<p>
+		<a href="sign.html">sign</a>
+	</p>
 </body>
 </html>

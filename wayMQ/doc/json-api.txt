@@ -1,0 +1,21 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+		wayMQ json-api
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/Sign?pn=0&do=in
+
+Request:
+
+pn=[phone number]
+do=[in|out|up|state|sms]
+
+Response:
+
+{
+"http_response_code":200, "http_response_message":"OK",
+"state":"on|off|in|up",
+"name":"user_display_name"
+}
+
