@@ -18,4 +18,6 @@ public interface IJsonRequestContext {
 
 	IUser getUser();
 
+	ISession getSession();
+
 }

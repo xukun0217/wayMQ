@@ -73,5 +73,22 @@ WayMQ.prototype.request = function(url) {
 	return new WayRequest(url);
 };
 
+WayMQ.prototype.goto_url = function(url) {
+	window.location.href = url;
+};
+
+WayMQ.prototype.alertHttpError = function(url, json, skipOK) {
+	var code = json["http_response_code"];
+	var msg = json["http_response_message"];
+	var txt = ("error:\n" + "HTTP " + code + " " + msg + "\nurl=" + url);
+	if (skipOK) {
+		if (code != 200)
+			alert(txt);
+	} else {
+		alert(txt);
+	}
+	return code;
+};
+
 // ////////////////////////////////////////////////////////////////////
 // EOF

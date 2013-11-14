@@ -6,7 +6,7 @@ public class UserId extends ObjId {
 		super(s);
 	}
 
-	public static UserId idForHashString(String s) {
+	public static UserId idByPhoneNumber(String s) {
 		s = __hashString(s);
 		return new UserId(s);
 	}

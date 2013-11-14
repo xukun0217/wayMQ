@@ -4,7 +4,12 @@ public interface ISession {
 
 	IUser getUser();
 
-	void setUser(IUser user);
+	void bindUser(IUser user);
 
 	SessionId getId();
+
+	ITempPassword getTempPassword();
+
+	void setTempPassword(ITempPassword tp);
+
 }

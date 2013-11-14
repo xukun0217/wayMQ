@@ -11,4 +11,9 @@ public interface IUser {
 	String getPhone();
 
 	UserId getId();
+
+	// setter
+
+	void setName(String name);
+
 }

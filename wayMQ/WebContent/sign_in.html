@@ -15,29 +15,73 @@
 
 	function doInit() {
 
-		$("#text_wait").hide();
-		$("#button_sign").click(function() {
+		$("#button_get_passwd").click(function() {
 
-			$("#text_wait").show();
+			var phone_num = $("#edit_phone_num").val();
+
+			if (phone_num == null)
+				phone_num = "";
+			if (phone_num.length != 11) {
+				alert("input a phone number!");
+				return;
+			}
 
 			var req = mq.request("Sign");
-			req.setParam("do", "state");
-			req.setParam("pn", phone_num );
-		
-			req.send(function(url, json) {
+			req.setParam("do", "passwd");
+			req.setParam("pn", phone_num);
 
-				var str = JSON.stringify(json);
-				alert("REST\nurl = " + url + "\njson = " + str);
+			req.send(function(url, json) {
+				var code = mq.alertHttpError(url, json, true);
+				if (code == 200) {
+					alert("please wait your passwd by sms!");
+				}
 			});
 
+		});
+
+		$("#button_sign_in").click(function() {
+
+			var passwd = $("#edit_passwd").val();
+
+			if (passwd == null)
+				passwd = "";
+			if (passwd.length < 1) {
+				alert("input a password!");
+				return;
+			}
+
+			var req = mq.request("Sign");
+			req.setParam("do", "in");
+			req.setParam("pw", passwd);
+
+			req.send(function(url, json) {
+
+				var code = mq.alertHttpError(url, json, true);
+				if (code != 200)
+					return;
+
+				var state = json["state"];
+				if (state == "on") {
+					mq.goto_url("home.html");
+				} else {
+					alert("failed to sign in!");
+				}
+
+			});
+
+		});
+
+		$("#button_sign_up").click(function() {
+			mq.goto_url("sign_up.html");
 		});
 
 		var req = mq.request("Sign");
 		req.setParam("do", "state");
 		req.send(function(url, json) {
-
-			var str = JSON.stringify(json);
-			alert("REST\nurl = " + url + "\njson = " + str);
+			var state = json["state"];
+			if (state == "in") {
+				mq.goto_url("home.html");
+			}
 		});
 
 	}
@@ -55,11 +99,22 @@
 	<div>
 		<div>
 
-			<input type="tel" />
+			<div>
+				<button id="button_sign_up">sign up</button>
+			</div>
 
-			<button id="button_sign">sign</button>
+			<div>
+				<div>phone:</div>
+				<input id='edit_phone_num' type="text" />
+				<button id="button_get_passwd">get temp password</button>
+			</div>
+			<div>
+				<div>password:</div>
+				<input id='edit_passwd' type="text" />
+				<button id="button_sign_in">sign in</button>
+			</div>
 		</div>
-		<div id="text_wait">waiting...</div>
+
 	</div>
 
 </body>

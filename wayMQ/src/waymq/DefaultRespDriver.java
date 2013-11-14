@@ -90,7 +90,7 @@ public class DefaultRespDriver implements IJsonResponderDriver {
 		private final HttpServletResponse _resp;
 		private final JSONObject _resp_json;
 		private Map<String, String> _req_map;
-		private IUser _user;
+		private ISession _session;
 
 		public MyContext(HttpServletRequest request,
 				HttpServletResponse response) {
@@ -137,30 +137,7 @@ public class DefaultRespDriver implements IJsonResponderDriver {
 
 		@Override
 		public IUser getUser() {
-			IUser user = this._user;
-			if (user != null)
-				return user;
-
-			String uid = null;
-			String token = null;
-			String session = null;
-
-			Cookie[] cookies = this._req.getCookies();
-			for (Cookie coo : cookies) {
-				String name = coo.getName();
-				if (name.equals(Key.user_id)) {
-					uid = coo.getValue();
-				} else if (name.equals(Key.user_token)) {
-					token = coo.getValue();
-				} else if (name.equals(Key.session_id)) {
-					session = coo.getValue();
-				}
-			}
-
-			if (uid != null) {
-			}
-
-			return user;
+			return this.getSession().getUser();
 		}
 
 		@Override
@@ -171,6 +148,33 @@ public class DefaultRespDriver implements IJsonResponderDriver {
 				_model = model;
 			}
 			return model;
+		}
+
+		@Override
+		public ISession getSession() {
+			ISession session = this._session;
+			if (session != null) {
+				return session;
+			}
+			String sid = null;
+			Cookie[] cookies = this._req.getCookies();
+			if (cookies != null)
+				for (Cookie coo : cookies) {
+					String name = coo.getName();
+					if (name.equals(Key.session_id)) {
+						sid = coo.getValue();
+					}
+				}
+			IDataModel model = this.getModel();
+			session = model.getSession(new SessionId(sid + ""));
+			if (session == null) {
+				session = model.newSession();
+				sid = session.getId().toString() + "";
+				Cookie coo = new Cookie(Key.session_id, sid);
+				this._resp.addCookie(coo);
+			}
+			this._session = session;
+			return session;
 		}
 
 	}
