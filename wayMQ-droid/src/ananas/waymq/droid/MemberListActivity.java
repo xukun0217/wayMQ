@@ -1,36 +1,42 @@
 package ananas.waymq.droid;
 
+import ananas.waymq.droid.api.ICoreApi;
 import ananas.waymq.droid.core.CoreAgent;
-import ananas.waymq.droid.core.ICoreApi;
 import ananas.waymq.droid.core.IMember;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
 public class MemberListActivity extends Activity {
 
-	private ListView _list;
 	private CoreAgent _ca;
+
+	private Button _btn_add;
+	private ListView _list_members;
+	private EditText _edit_search;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_member_list);
-
 		this._ca = new CoreAgent(this);
 
-		this._list = (ListView) this.findViewById(R.id.list_members);
+		this._list_members = (ListView) this.findViewById(R.id.list_members);
+		this._btn_add = (Button) this.findViewById(R.id.btn_add);
+		this._edit_search = (EditText) this.findViewById(R.id.edit_search);
 
 		ListAdapter adapter = this.__find_members(null);
-		this._list.setAdapter(adapter);
+		this._list_members.setAdapter(adapter);
 	}
 
 	private ListAdapter __find_members(String keyword) {
 
 		ICoreApi core = this._ca.getCore();
-		IMember[] rlt = core.findMembers(keyword);
+		IMember[] rlt = core.getMembers();
 		MyItem[] array = new MyItem[rlt.length];
 		for (int i = rlt.length - 1; i >= 0; i--) {
 			array[i] = new MyItem(rlt[i]);

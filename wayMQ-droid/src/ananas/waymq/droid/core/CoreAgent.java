@@ -1,5 +1,6 @@
 package ananas.waymq.droid.core;
 
+import ananas.waymq.droid.api.ICoreApi;
 import android.app.Activity;
 
 public class CoreAgent {

@@ -1,4 +1,4 @@
-package ananas.waymq.droid.core;
+package ananas.waymq.droid.api;
 
 import java.io.File;
 
