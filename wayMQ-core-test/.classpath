@@ -6,5 +6,9 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/wayMQ-core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ananas-base"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ananas-base-jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ananas-base-lib"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/objectbox"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/xgit-core-api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/xgit-core-lib"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -39,10 +39,7 @@ public class JoinGroup extends WayMQBody implements IJoinGroup {
 		return null;
 	}
 
-	@Override
-	public void onCreate() {
-		// TODO Auto-generated method stub
-		
-	}
+	
+
 
 }
