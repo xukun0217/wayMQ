@@ -8,6 +8,11 @@ import org.junit.Test;
 import ananas.lib.io.vfs.VFS;
 import ananas.lib.io.vfs.VFile;
 import ananas.lib.io.vfs.VFileSystem;
+import ananas.waymq.api.IGroup;
+import ananas.waymq.api.IJoinGroup;
+import ananas.waymq.api.IMember;
+import ananas.waymq.core.DefaultWayMQRepo;
+import ananas.waymq.core.WayMQRepo;
 
 public class TestWayMQCore {
 
@@ -15,7 +20,24 @@ public class TestWayMQCore {
 	public void test() {
 
 		VFile file = this.__get_project_dir();
+		VFileSystem vfs = file.getVFS();
+		VFile rdir = vfs.newFile(file, "test/repo/.wayMQ");
 		System.out.println("project-dir : " + file);
+
+		WayMQRepo repo = new DefaultWayMQRepo(rdir);
+		if (!repo.exists()) {
+			repo.create();
+		}
+
+		repo.open();
+		IMember root = repo.getRoot();
+		IJoinGroup[] groups = root.listGroups();
+		if (groups.length == 0) {
+			IGroup group = root.createGroup("abc");
+			groups = root.listGroups();
+		}
+		for (IJoinGroup g : groups) {
+		}
 
 	}
 
