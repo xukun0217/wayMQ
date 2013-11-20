@@ -2,20 +2,17 @@ package ananas.waymq.core;
 
 import ananas.lib.io.vfs.VFile;
 import ananas.objectbox.IBox;
-import ananas.waymq.api.IMember;
 
-public interface WayMQRepo {
+public interface IRepo {
 
 	VFile getRepoDirectory();
 
-	IBox getObjectBox();
+	IBox getBox();
 
 	boolean exists();
 
-	boolean create();
+	boolean init();
 
-	boolean open();
-
-	IMember getRoot();
+	boolean check();
 
 }

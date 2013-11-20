@@ -1,6 +1,8 @@
 package ananas.waymq.api;
 
-public interface IJoinGroupList {
+import ananas.waymq.core.ISessionElement;
+
+public interface IJoinGroupList extends ISessionElement {
 
 	IJoinGroup[] toArray();
 

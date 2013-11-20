@@ -1,16 +1,21 @@
 package ananas.waymq.api;
 
-public interface IMemberPhone {
+import ananas.waymq.core.ISessionElement;
+
+public interface IMemberPhone extends ISessionElement {
 
 	interface Key {
 
-		String member_id = "member_id";
+		// head keys
 		String phone_num = "phone_number";
-	}
 
-	IMember getMember();
+		// body keys
+		String member_id = "member_id";
+	}
 
 	void setMember(IMember member);
 
 	String getPhoneNumber();
+
+	IMember getMember();
 }

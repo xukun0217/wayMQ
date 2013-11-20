@@ -1,25 +1,19 @@
-package waymq.model;
+package ananas.waymq.model;
 
-import com.alibaba.fastjson.JSONObject;
-
+import ananas.objectbox.IObject;
 import ananas.waymq.api.IGroup;
 import ananas.waymq.api.IJoinGroup;
 import ananas.waymq.api.IJoinGroupList;
 import ananas.waymq.api.IMember;
-import ananas.waymq.core.WayMQBody;
+import ananas.waymq.core.ISession;
 
 public class JoinGroupList extends WayMQBody implements IJoinGroupList {
 
-	@Override
-	public void onLoad(JSONObject root) {
-		// TODO Auto-generated method stub
-		
-	}
+	 
 
-	@Override
-	public JSONObject onSave(JSONObject root) {
-		// TODO Auto-generated method stub
-		return null;
+	public JoinGroupList(ISession session, IObject obj) {
+		super(session, obj);
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -31,7 +25,7 @@ public class JoinGroupList extends WayMQBody implements IJoinGroupList {
 	@Override
 	public void add(IGroup group, IMember member) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
