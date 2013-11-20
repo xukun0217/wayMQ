@@ -4,10 +4,11 @@ import ananas.objectbox.IObject;
 import ananas.objectbox.json.JsonLS;
 import ananas.waymq.core.ISession;
 import ananas.waymq.core.ISessionElement;
+import ananas.xgit.repo.ObjectId;
 
 import com.alibaba.fastjson.JSONObject;
 
-public class WayMQBody implements ISessionElement {
+public abstract class WayMQBody implements ISessionElement {
 
 	private final ISession _session;
 	private final IObject _object;
@@ -31,6 +32,8 @@ public class WayMQBody implements ISessionElement {
 	@Override
 	public final void load() {
 		JSONObject json = JsonLS.load(this.getObject());
+		if (json == null)
+			return;
 		this.onLoad(json);
 	}
 
@@ -56,12 +59,8 @@ public class WayMQBody implements ISessionElement {
 		this._is_mod = mod;
 	}
 
-	@Override
-	public void onLoad(JSONObject json) {
-	}
-
-	@Override
-	public void onSave(JSONObject json) {
+	public ObjectId getId() {
+		return this._object.getId();
 	}
 
 }

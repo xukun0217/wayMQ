@@ -1,25 +1,32 @@
 package ananas.waymq.model;
 
-import com.alibaba.fastjson.JSONObject;
-
 import ananas.objectbox.IObject;
 import ananas.waymq.api.IMember;
 import ananas.waymq.api.IMemberPhone;
+import ananas.waymq.core.ElementProxy;
 import ananas.waymq.core.ISession;
 import ananas.xgit.repo.ObjectId;
 
+import com.alibaba.fastjson.JSONObject;
+
 public class MemberPhone extends WayMQBody implements IMemberPhone {
 
-	private IMember _member;
-	private String _phone_num;
+	private final String _phone_num;
+
+	private ElementProxy<IMember> _member;
 
 	public MemberPhone(ISession session, IObject obj) {
 		super(session, obj);
+
+		this._phone_num = obj.getHeader(Key.phone_num);
+		this._member = new ElementProxy<IMember>(session, "");
 	}
 
 	@Override
 	public void setMember(IMember member) {
-		this._member = member;
+		ISession session = this.getSession();
+		ObjectId id = member.getObject().getId();
+		this._member = new ElementProxy<IMember>(session, id);
 	}
 
 	@Override
@@ -29,7 +36,7 @@ public class MemberPhone extends WayMQBody implements IMemberPhone {
 
 	@Override
 	public IMember getMember() {
-		return this._member;
+		return this._member.get();
 	}
 
 	@Override
@@ -39,9 +46,11 @@ public class MemberPhone extends WayMQBody implements IMemberPhone {
 			return;
 		}
 
+		// body
 		String idstr = json.getString(Key.member_id);
-		ObjectId id = ObjectId.Factory.create(idstr);
-		this._member = this.getSession().getMember(id);
+		ISession session = this.getSession();
+		this._member = new ElementProxy<IMember>(session, idstr);
+
 	}
 
 	@Override

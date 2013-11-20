@@ -2,6 +2,11 @@ package ananas.waymq.core;
 
 import java.util.Map;
 
+import ananas.waymq.api.IEvent;
+import ananas.waymq.api.IGroup;
+import ananas.waymq.api.IHoldEventList;
+import ananas.waymq.api.IJoinEventList;
+import ananas.waymq.api.IJoinGroupList;
 import ananas.waymq.api.IMember;
 import ananas.waymq.api.IMemberPhone;
 import ananas.waymq.impl.DefaultSessionImpl;
@@ -43,6 +48,36 @@ public class DefaultSession implements ISession {
 	@Override
 	public void close() {
 		impl.close();
+	}
+
+	@Override
+	public IMember newMember(String name, IMemberPhone phone) {
+		return impl.newMember(name, phone);
+	}
+
+	@Override
+	public IEvent newEvent(String title, IGroup creatorGroup, IMember creator) {
+		return impl.newEvent(title, creatorGroup, creator);
+	}
+
+	@Override
+	public IGroup newGroup(String name, IMember member) {
+		return impl.newGroup(name, member);
+	}
+
+	@Override
+	public IJoinEventList newJoinEventList(IEvent event, IMember member) {
+		return impl.newJoinEventList(event, member);
+	}
+
+	@Override
+	public IJoinGroupList newJoinGroupList(IGroup group, IMember member) {
+		return impl.newJoinGroupList(group, member);
+	}
+
+	@Override
+	public IHoldEventList newHoldEventList(IEvent event, IGroup group) {
+		return impl.newHoldEventList(event, group);
 	}
 
 }

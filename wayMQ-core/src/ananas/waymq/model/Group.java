@@ -1,5 +1,7 @@
 package ananas.waymq.model;
 
+import com.alibaba.fastjson.JSONObject;
+
 import ananas.objectbox.IObject;
 import ananas.waymq.api.IGroup;
 import ananas.waymq.api.IHoldEvent;
@@ -25,6 +27,18 @@ public class Group extends WayMQBody implements IGroup {
 	public IHoldEvent[] listEvents() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void onLoad(JSONObject json) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onSave(JSONObject json) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

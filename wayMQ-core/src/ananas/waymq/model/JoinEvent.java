@@ -1,5 +1,7 @@
 package ananas.waymq.model;
 
+import com.alibaba.fastjson.JSONObject;
+
 import ananas.objectbox.IObject;
 import ananas.waymq.api.IEvent;
 import ananas.waymq.api.IJoinEvent;
@@ -30,6 +32,18 @@ public class JoinEvent extends WayMQBody implements IJoinEvent {
 	public long getTime() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public void onLoad(JSONObject json) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onSave(JSONObject json) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

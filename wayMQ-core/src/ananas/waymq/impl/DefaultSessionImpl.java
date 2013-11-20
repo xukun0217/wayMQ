@@ -6,6 +6,11 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import ananas.objectbox.IObject;
+import ananas.waymq.api.IEvent;
+import ananas.waymq.api.IGroup;
+import ananas.waymq.api.IHoldEventList;
+import ananas.waymq.api.IJoinEventList;
+import ananas.waymq.api.IJoinGroupList;
 import ananas.waymq.api.IMember;
 import ananas.waymq.api.IMemberPhone;
 import ananas.waymq.core.IRepo;
@@ -64,19 +69,11 @@ public class DefaultSessionImpl implements ISession {
 		phone.load();
 		IMember member = phone.getMember();
 		if (member == null) {
-			member = this.newMember(phone);
+			member = this.newMember("byPhone", phone);
 			phone.setMember(member);
 		}
 
 		return phone;
-	}
-
-	private IMember newMember(IMemberPhone phone) {
-		Map<String, String> attr = new HashMap<String, String>();
-		attr.put(IObject.HeadKey.create_time, System.currentTimeMillis() + "");
-		attr.put(IMember.Key.phone_id, phone.getObject().getId() + "");
-		IMember member = (IMember) this.newElement(type.member, attr);
-		return member;
 	}
 
 	@Override
@@ -85,6 +82,9 @@ public class DefaultSessionImpl implements ISession {
 		if (element != null)
 			return element;
 		IObject obj = this._repo.getBox().getObject(id);
+		if (obj == null) {
+			return null;
+		}
 		if (!obj.getHeadFile().exists()) {
 			return null;
 		}
@@ -131,5 +131,44 @@ public class DefaultSessionImpl implements ISession {
 		for (ISessionElement element : all) {
 			element.save();
 		}
+	}
+
+	@Override
+	public IMember newMember(String name, IMemberPhone phone) {
+		Map<String, String> attr = new HashMap<String, String>();
+		attr.put(IObject.HeadKey.create_time, System.currentTimeMillis() + "");
+		attr.put(IMember.Key.phone_id, phone.getObject().getId() + "");
+		IMember member = (IMember) this.newElement(type.member, attr);
+		return member;
+	}
+
+	@Override
+	public IEvent newEvent(String title, IGroup creatorGroup, IMember creator) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IGroup newGroup(String name, IMember member) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IJoinEventList newJoinEventList(IEvent event, IMember member) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IJoinGroupList newJoinGroupList(IGroup group, IMember member) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IHoldEventList newHoldEventList(IEvent event, IGroup group) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

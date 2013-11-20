@@ -10,6 +10,8 @@ public interface IMember extends ISessionElement {
 		String phone_id = "phone_id";
 
 		// body keys
+		String join_event_list_id = "join_event_list";
+		String join_group_list_id = "join_group_list";
 	}
 
 	IJoinGroup[] listGroups();
