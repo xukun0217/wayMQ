@@ -2,14 +2,14 @@ package ananas.waymq.core;
 
 import java.util.Map;
 
-import ananas.waymq.api.IEvent;
-import ananas.waymq.api.IGroup;
-import ananas.waymq.api.IHoldEventList;
-import ananas.waymq.api.IJoinEventList;
-import ananas.waymq.api.IJoinGroupList;
-import ananas.waymq.api.IMember;
-import ananas.waymq.api.IMemberPhone;
 import ananas.waymq.impl.DefaultSessionImpl;
+import ananas.waymq.inner.IEvent;
+import ananas.waymq.inner.IGroup;
+import ananas.waymq.inner.IHoldEventList;
+import ananas.waymq.inner.IJoinEventList;
+import ananas.waymq.inner.IJoinGroupList;
+import ananas.waymq.inner.IMember;
+import ananas.waymq.inner.IMemberPhone;
 import ananas.xgit.repo.ObjectId;
 
 public class DefaultSession implements ISession {

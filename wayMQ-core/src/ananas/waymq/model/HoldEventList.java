@@ -3,8 +3,8 @@ package ananas.waymq.model;
 import com.alibaba.fastjson.JSONObject;
 
 import ananas.objectbox.IObject;
-import ananas.waymq.api.IHoldEventList;
 import ananas.waymq.core.ISession;
+import ananas.waymq.inner.IHoldEventList;
 
 public class HoldEventList extends WayMQBody implements IHoldEventList {
 

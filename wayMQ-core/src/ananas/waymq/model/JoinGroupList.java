@@ -3,11 +3,11 @@ package ananas.waymq.model;
 import com.alibaba.fastjson.JSONObject;
 
 import ananas.objectbox.IObject;
-import ananas.waymq.api.IGroup;
-import ananas.waymq.api.IJoinGroup;
-import ananas.waymq.api.IJoinGroupList;
-import ananas.waymq.api.IMember;
 import ananas.waymq.core.ISession;
+import ananas.waymq.inner.IGroup;
+import ananas.waymq.inner.IJoinGroup;
+import ananas.waymq.inner.IJoinGroupList;
+import ananas.waymq.inner.IMember;
 
 public class JoinGroupList extends WayMQBody implements IJoinGroupList {
 

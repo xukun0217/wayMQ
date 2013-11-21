@@ -9,51 +9,46 @@ import ananas.lib.io.vfs.VFS;
 import ananas.lib.io.vfs.VFile;
 import ananas.lib.io.vfs.VFileSystem;
 import ananas.lib.util.PropertiesLoader;
-import ananas.waymq.core.DefaultRepo;
-import ananas.waymq.core.DefaultSession;
-import ananas.waymq.core.IRepo;
-import ananas.waymq.core.ISession;
-import ananas.waymq.inner.IGroup;
-import ananas.waymq.inner.IJoinGroup;
-import ananas.waymq.inner.IMember;
+import ananas.waymq.api.IDocument;
+import ananas.waymq.api.IEvent;
+import ananas.waymq.api.IGroup;
+import ananas.waymq.api.IMember;
+import ananas.waymq.api.IMemberPhone;
+import ananas.waymq.core.DocumentFactory;
 
-public class TestWayMQCore {
+public class TestWayMQ2 {
 
 	@Test
 	public void test() {
 
-		this.init();
+		VFile file = this.init();
+
+		// repo
+		IDocument doc = DocumentFactory.load(file);
+
+		IMember root = doc.getRoot();
+		IGroup group = root.createGroup("wayMQ");
+		IMemberPhone phone = doc.newMemberPhone("12345678901");
+		IMember user1 = doc.newMember("tester", phone);
+		user1.join(group);
+		IEvent event = user1.createEvent("", group);
+		user1.join(event);
+
+		doc.save();
+	}
+
+	private VFile init() {
+		String fn = "sys.properties";
+		PropertiesLoader.Util.loadPropertiesToSystem(this, fn);
 
 		VFile file = this.__get_project_dir();
 		VFileSystem vfs = file.getVFS();
 		VFile rdir = vfs.newFile(file, "test/repo/.wayMQ");
 		System.out.println("project-dir : " + file);
 
-		// repo
-		IRepo repo = new DefaultRepo(rdir);
-		if (!repo.exists()) {
-			repo.init();
-		}
-		repo.check();
+		VFile mf = vfs.newFile(rdir.getParentFile(), "main.json");
+		return mf;
 
-		// session
-		ISession session = new DefaultSession(repo);
-
-		IMember root = session.getRoot();
-		IJoinGroup[] groups = root.listGroups();
-		if (groups.length == 0) {
-			IGroup group = root.createGroup("abc");
-			groups = root.listGroups();
-		}
-		for (IJoinGroup g : groups) {
-		}
-
-		session.close();
-	}
-
-	private void init() {
-		String fn = this.getClass().getSimpleName() + ".properties";
-		PropertiesLoader.Util.loadPropertiesToSystem(this, fn);
 	}
 
 	private VFile __get_project_dir() {
@@ -77,7 +72,7 @@ public class TestWayMQCore {
 
 	public static void main(String[] arg) {
 
-		(new TestWayMQCore()).test();
+		(new TestWayMQ2()).test();
 
 	}
 

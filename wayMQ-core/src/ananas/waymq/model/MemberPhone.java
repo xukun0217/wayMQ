@@ -1,10 +1,10 @@
 package ananas.waymq.model;
 
 import ananas.objectbox.IObject;
-import ananas.waymq.api.IMember;
-import ananas.waymq.api.IMemberPhone;
 import ananas.waymq.core.ElementProxy;
 import ananas.waymq.core.ISession;
+import ananas.waymq.inner.IMember;
+import ananas.waymq.inner.IMemberPhone;
 import ananas.xgit.repo.ObjectId;
 
 import com.alibaba.fastjson.JSONObject;

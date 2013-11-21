@@ -1,25 +1,26 @@
 package ananas.waymq.api;
 
-import ananas.waymq.core.ISessionElement;
+public interface IMember extends IElement {
 
-public interface IMember extends ISessionElement {
-
-	interface Key {
-
-		// head keys
-		String phone_id = "phone_id";
-
-		// body keys
-		String join_event_list_id = "join_event_list";
-		String join_group_list_id = "join_group_list";
-	}
+	// getter
 
 	IJoinGroup[] listGroups();
 
 	IJoinEvent[] listEvents();
 
-	IGroup createGroup(String name);
+	IJoinEventList getJoinEventList();
+
+	IJoinGroupList getJoinGroupList();
 
 	IMemberPhone getPhone();
+
+	// operate
+	IGroup createGroup(String name);
+
+	IEvent createEvent(String name, IGroup group);
+
+	void join(IEvent event);
+
+	void join(IGroup group);
 
 }

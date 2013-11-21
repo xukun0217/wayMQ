@@ -3,10 +3,10 @@ package ananas.waymq.model;
 import com.alibaba.fastjson.JSONObject;
 
 import ananas.objectbox.IObject;
-import ananas.waymq.api.IEvent;
-import ananas.waymq.api.IJoinEvent;
-import ananas.waymq.api.IMember;
 import ananas.waymq.core.ISession;
+import ananas.waymq.inner.IEvent;
+import ananas.waymq.inner.IJoinEvent;
+import ananas.waymq.inner.IMember;
 
 public class JoinEvent extends WayMQBody implements IJoinEvent {
 

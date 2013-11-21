@@ -1,9 +1,8 @@
 package ananas.waymq.api;
 
-import ananas.waymq.core.ISessionElement;
-
-public interface IJoinEventList extends ISessionElement {
+public interface IJoinEventList extends IElement {
 
 	IJoinEvent[] toArray();
 
+	void add(IJoinEvent join);
 }

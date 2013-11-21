@@ -1,13 +1,18 @@
 package ananas.waymq.api;
 
-import ananas.waymq.core.ISessionElement;
-
-public interface IEvent extends ISessionElement {
+public interface IEvent extends IElement {
 
 	IJoinEvent[] listJoins();
+
+	IJoinEventList getJoinEventList();
 
 	IGroup getCreatorGroup();
 
 	IMember getCreator();
 
+	String getName();
+
+	// setter
+
+	void setName(String name);
 }

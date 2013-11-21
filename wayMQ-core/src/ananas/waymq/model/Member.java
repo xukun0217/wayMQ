@@ -1,15 +1,15 @@
 package ananas.waymq.model;
 
 import ananas.objectbox.IObject;
-import ananas.waymq.api.IGroup;
-import ananas.waymq.api.IJoinEvent;
-import ananas.waymq.api.IJoinEventList;
-import ananas.waymq.api.IJoinGroup;
-import ananas.waymq.api.IJoinGroupList;
-import ananas.waymq.api.IMember;
-import ananas.waymq.api.IMemberPhone;
 import ananas.waymq.core.ElementProxy;
 import ananas.waymq.core.ISession;
+import ananas.waymq.inner.IGroup;
+import ananas.waymq.inner.IJoinEvent;
+import ananas.waymq.inner.IJoinEventList;
+import ananas.waymq.inner.IJoinGroup;
+import ananas.waymq.inner.IJoinGroupList;
+import ananas.waymq.inner.IMember;
+import ananas.waymq.inner.IMemberPhone;
 
 import com.alibaba.fastjson.JSONObject;
 

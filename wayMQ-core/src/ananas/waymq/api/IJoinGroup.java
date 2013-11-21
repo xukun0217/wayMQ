@@ -1,12 +1,12 @@
 package ananas.waymq.api;
 
-import ananas.waymq.core.ISessionElement;
+public interface IJoinGroup extends IElement {
 
-public interface IJoinGroup extends ISessionElement {
-
+	// getter
 	IGroup getGroup();
 
 	IMember getMember();
 
 	long getTime();
+
 }

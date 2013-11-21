@@ -1,7 +1,9 @@
 package ananas.waymq.api;
 
-import ananas.waymq.core.ISessionElement;
+public interface IHoldEventList extends IElement {
 
-public interface IHoldEventList extends ISessionElement {
+	IHoldEvent[] toArray();
+
+	void add(IHoldEvent hold);
 
 }
