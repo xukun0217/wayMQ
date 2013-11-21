@@ -116,6 +116,17 @@ public class NewDocument implements IDocument {
 	private final static char[] hex_char_array = "0123456789abcdef"
 			.toCharArray();
 
+	/**
+	 * @param time
+	 *            if time=0, use currentTime; else use time.
+	 * */
+	public ObjectId genId(Class<?> cls, long time, IEvent event, IGroup group,
+			IMember member) {
+
+		// TODO ...
+		return null;
+	}
+
 	@Override
 	public ObjectId genId(String s) {
 
@@ -158,8 +169,8 @@ public class NewDocument implements IDocument {
 
 	@Override
 	public IJoinGroup newJoinGroup(IMember member, IGroup group) {
-		String ids = member.getId() + "&&" + group.getId();
-		ObjectId id = this.genId(ids);
+
+		ObjectId id = this.genId(IJoinGroup.class, -1, null, group, member);
 		IJoinGroup join = this.getJoinGroup(id);
 		if (join != null)
 			return join;
@@ -174,13 +185,12 @@ public class NewDocument implements IDocument {
 	@Override
 	public IJoinEvent newJoinEvent(IMember member, IEvent event) {
 
-		ObjectId mid = member.getId();
-		ObjectId eid = event.getId();
-		ObjectId id = this.genId(eid + "&&" + mid);
+		ObjectId id = this.genId(IJoinEvent.class, -1, event, null, member);
 		IJoinEvent join = this.getJoinEvent(id);
 		if (join != null) {
 			return join;
 		}
+
 		TheJoinEvent theNew;
 		join = theNew = new TheJoinEvent(this, id);
 		theNew.setEvent(event);
@@ -235,12 +245,14 @@ public class NewDocument implements IDocument {
 
 	@Override
 	public IMember newMember(String name, IMemberPhone phone) {
+
 		IMember member = phone.getMember();
 		if (member != null)
 			return member;
 
 		ObjectId id = this.genId(phone.getId() + "@@"
 				+ System.currentTimeMillis() + "@@" + name);
+
 		TheMember theNew;
 		member = theNew = new TheMember(this, id);
 		this.__put_new(theNew);
@@ -251,9 +263,7 @@ public class NewDocument implements IDocument {
 
 	@Override
 	public IEvent newEvent(String name, IGroup creatorGroup, IMember creator) {
-		String ids = System.currentTimeMillis() + "@" + creatorGroup.getId()
-				+ "@" + creator.getId();
-		ObjectId id = this.genId(ids);
+		ObjectId id = this.genId(IEvent.class, 0, null, creatorGroup, creator);
 		TheEvent theNew = new TheEvent(this, id);
 		IEvent event = theNew;
 		theNew.setCreator(creatorGroup, creator);
@@ -264,13 +274,12 @@ public class NewDocument implements IDocument {
 	@Override
 	public IGroup newGroup(String name, IMember creator) {
 
-		String ids = name + "@" + creator.getId();
-		ObjectId id = this.genId(ids);
-
+		ObjectId id = this.genId(IGroup.class, -1, null, null, creator);
 		IGroup group = this.getGroup(id);
 		if (group != null) {
 			return group;
 		}
+
 		TheGroup theNew;
 		group = theNew = new TheGroup(this, id);
 		theNew.setName(name);
@@ -281,11 +290,12 @@ public class NewDocument implements IDocument {
 
 	@Override
 	public IHoldEvent newHoldEvent(IGroup group, IEvent event) {
-		String ids = group.getId() + "@" + event.getId();
-		ObjectId id = this.genId(ids);
+
+		ObjectId id = this.genId(IHoldEvent.class, -1, event, group, null);
 		IHoldEvent hold = this.getHoldEvent(id);
 		if (hold != null)
 			return hold;
+
 		TheHoldEvent theNew;
 		hold = theNew = new TheHoldEvent(this, id);
 		theNew.setTime(System.currentTimeMillis());
@@ -311,11 +321,8 @@ public class NewDocument implements IDocument {
 
 	@Override
 	public IJoinGroupList newJoinGroupList(IMember member, IGroup group) {
-		String mid, gid;
-		mid = (member == null) ? "" : member.getId() + "";
-		gid = (group == null) ? "" : group.getId() + "";
-		String ids = IJoinGroupList.class.getName() + "@" + mid + "@" + gid;
-		ObjectId id = this.genId(ids);
+
+		ObjectId id = this.genId(IJoinGroupList.class, -1, null, group, member);
 		IJoinGroupList list = this.getJoinGroupList(id);
 		if (list != null) {
 			return list;
@@ -327,6 +334,7 @@ public class NewDocument implements IDocument {
 
 	@Override
 	public IJoinEventList newJoinEventList(IMember member, IEvent event) {
+		// TODO gen id
 		String mid, eid;
 		mid = (member == null) ? "" : member.getId() + "";
 		eid = (event == null) ? "" : event.getId() + "";
@@ -343,6 +351,7 @@ public class NewDocument implements IDocument {
 
 	@Override
 	public IHoldEventList newHoldEventList(IGroup group, IEvent event) {
+		// TODO gen id
 		String gid, eid;
 		gid = (group == null) ? "" : group.getId() + "";
 		eid = (event == null) ? "" : event.getId() + "";
