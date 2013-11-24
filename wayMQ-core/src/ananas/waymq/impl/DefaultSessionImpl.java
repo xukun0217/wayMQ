@@ -115,7 +115,7 @@ public class DefaultSessionImpl implements ISession {
 
 	@Override
 	public ISessionElement newElement(String type, Map<String, String> attr) {
-		IObject obj = this._repo.getBox().newObject(type, attr);
+		IObject obj = this._repo.getBox().newObject(type.getClass(), attr);
 		ObjectId id = obj.getId();
 		return this.getElement(id);
 	}
