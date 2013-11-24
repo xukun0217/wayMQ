@@ -1,5 +1,7 @@
 package ananas.waymq.api;
 
+import java.util.Enumeration;
+
 import ananas.xgit.repo.ObjectId;
 
 public interface IDocument {
@@ -15,6 +17,8 @@ public interface IDocument {
 	IMember getMember(String phone);
 
 	IMemberPhone getMemberPhone(String phone);
+
+	Enumeration<IElement> objects();
 
 	// get by id
 

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name='ananas.waymq.orm.model.Group' table='T_GROUP'
+		schema="waymq">
+
+
+		<id name='id' type='string'>
+			<column name='ID' length='50' />
+			<generator class='ananas.waymq.orm.id_gen.GroupIdGen' />
+		</id>
+
+		<property name='userId' type='string'>
+			<column name='C_USER_ID' length='50' />
+		</property>
+
+		<property name='name' type='string'>
+			<column name='C_NAME' length='50' />
+		</property>
+
+		<property name='discription' type='string'>
+			<column name='C_DISCRIPTION' length='500' />
+		</property>
+
+
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name='ananas.waymq.orm.model.Phone' table='T_PHONE'
+		schema="waymq">
+
+
+		<id name='id' type='string'>
+			<column name='ID' length='50' />
+			<generator class='ananas.waymq.orm.id_gen.PhoneIdGen' />
+		</id>
+
+		<property name='number' type='string'>
+			<column name='C_PHONE_NUMBER' length='20' />
+		</property>
+
+
+		<property name='userId' type='string'>
+			<column name='C_USER_ID' length='50' />
+		</property>
+
+	</class>
+</hibernate-mapping>

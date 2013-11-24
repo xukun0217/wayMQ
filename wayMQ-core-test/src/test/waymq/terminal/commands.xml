@@ -1,0 +1,10 @@
+<CommandSet xmlns="ananas:blueprint4:terminal" package="test.waymq.terminal.commands">
+
+
+
+	<Command name="ls" class=".ListSubs" />
+
+	<Command name="exit" />
+	<Command name="help" class="ananas.blueprint4.terminal.commands.Help" />
+
+</CommandSet>

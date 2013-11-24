@@ -2,7 +2,9 @@ package ananas.waymq.impl2;
 
 import java.security.MessageDigest;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Map;
 
 import ananas.lib.io.vfs.VFile;
@@ -123,8 +125,13 @@ public class NewDocument implements IDocument {
 	public ObjectId genId(Class<?> cls, long time, IEvent event, IGroup group,
 			IMember member) {
 
-		// TODO ...
-		return null;
+		String cid = cls.getName();
+		String eid = (event == null) ? "" : event.getId() + "";
+		String mid = (member == null) ? "" : member.getId() + "";
+		String gid = (group == null) ? "" : group.getId() + "";
+
+		String s = cid + "@" + time + "@" + eid + "@" + gid + "@" + mid;
+		return this.genId(s);
 	}
 
 	@Override
@@ -334,12 +341,7 @@ public class NewDocument implements IDocument {
 
 	@Override
 	public IJoinEventList newJoinEventList(IMember member, IEvent event) {
-		// TODO gen id
-		String mid, eid;
-		mid = (member == null) ? "" : member.getId() + "";
-		eid = (event == null) ? "" : event.getId() + "";
-		String ids = IJoinEventList.class.getName() + "@" + mid + "@" + eid;
-		ObjectId id = this.genId(ids);
+		ObjectId id = this.genId(IJoinEventList.class, -1, event, null, member);
 		IJoinEventList list = this.getJoinEventList(id);
 		if (list != null) {
 			return list;
@@ -351,12 +353,7 @@ public class NewDocument implements IDocument {
 
 	@Override
 	public IHoldEventList newHoldEventList(IGroup group, IEvent event) {
-		// TODO gen id
-		String gid, eid;
-		gid = (group == null) ? "" : group.getId() + "";
-		eid = (event == null) ? "" : event.getId() + "";
-		String ids = IHoldEventList.class.getName() + "@" + gid + "@" + eid;
-		ObjectId id = this.genId(ids);
+		ObjectId id = this.genId(IHoldEventList.class, -1, event, group, null);
 		IHoldEventList list = this.getHoldEventList(id);
 		if (list != null) {
 			return list;
@@ -364,6 +361,45 @@ public class NewDocument implements IDocument {
 		TheHoldEventList theNew = new TheHoldEventList(this, id);
 		this.__put_new(theNew);
 		return theNew;
+	}
+
+	@Override
+	public Enumeration<IElement> objects() {
+
+		Collection<IElementCtrl> objs = this._map_obj_ctrl.values();
+
+		return new MyEnumElements(objs);
+	}
+
+	class MyEnumElements implements Enumeration<IElement> {
+
+		private final Iterator<IElementCtrl> iter;
+
+		public MyEnumElements(Collection<IElementCtrl> objs) {
+			this.iter = objs.iterator();
+		}
+
+		@Override
+		public boolean hasMoreElements() {
+			return iter.hasNext();
+		}
+
+		@Override
+		public IElement nextElement() {
+
+			for (;;) {
+				IElementCtrl ctrl = iter.next();
+				if (ctrl != null) {
+					IElement ele = ctrl.getElement();
+					if (ele != null)
+						return ele;
+				}
+				if (iter.hasNext())
+					continue;
+				else
+					return null;
+			}
+		}
 	}
 
 }
