@@ -4,15 +4,13 @@ public interface IMember extends IElement {
 
 	// getter
 
-	IJoinGroup[] listGroups();
+	IJoinGroup getGroup();
+
+	IPhone getPhone();
 
 	IJoinEvent[] listEvents();
 
-	IJoinEventList getJoinEventList();
-
-	IJoinGroupList getJoinGroupList();
-
-	IMemberPhone getPhone();
+	void addEvent(IJoinEvent event);
 
 	// operate
 	IGroup createGroup(String name);

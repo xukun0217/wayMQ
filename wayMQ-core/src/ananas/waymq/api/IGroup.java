@@ -6,11 +6,7 @@ public interface IGroup extends IElement {
 
 	IHoldEvent[] listEvents();
 
-	IJoinGroupList getJoinGroupList();
-
-	IHoldEventList getHoldEventList();
-
-	IMember getCreator();
+	IUser getCreator();
 
 	String getName();
 

@@ -2,13 +2,31 @@ package ananas.waymq.api;
 
 import java.util.Enumeration;
 
+import ananas.lib.io.vfs.VFile;
+import ananas.objectbox.ITypeRegistrar;
 import ananas.xgit.repo.ObjectId;
 
 public interface IDocument {
 
+	VFile getFile();
+
 	void save();
 
-	IMember getRoot();
+	void init();
+
+	void check();
+
+	boolean exists();
+
+	void cleanCache();
+
+	//
+
+	ITypeRegistrar getTypes();
+
+	//
+
+	IUser getRoot();
 
 	ObjectId genId(String s);
 
@@ -16,7 +34,7 @@ public interface IDocument {
 
 	IMember getMember(String phone);
 
-	IMemberPhone getMemberPhone(String phone);
+	IPhone getPhone(String phone);
 
 	Enumeration<IElement> objects();
 
@@ -28,7 +46,7 @@ public interface IDocument {
 
 	IMember getMember(ObjectId id);
 
-	IMemberPhone getMemberPhone(ObjectId id);
+	IPhone getPhone(ObjectId id);
 
 	IJoinGroup getJoinGroup(ObjectId id);
 
@@ -36,17 +54,11 @@ public interface IDocument {
 
 	IHoldEvent getHoldEvent(ObjectId id);
 
-	IJoinGroupList getJoinGroupList(ObjectId id);
-
-	IJoinEventList getJoinEventList(ObjectId id);
-
-	IHoldEventList getHoldEventList(ObjectId id);
-
 	// new
 
-	IMemberPhone newMemberPhone(String phone);
+	IPhone newPhone(String phone);
 
-	IMember newMember(String name, IMemberPhone phone);
+	IMember newMember(String name, IPhone phone);
 
 	IEvent newEvent(String name, IGroup creatorGroup, IMember creator);
 
@@ -57,11 +69,5 @@ public interface IDocument {
 	IJoinEvent newJoinEvent(IMember member, IEvent event);
 
 	IHoldEvent newHoldEvent(IGroup group, IEvent event);
-
-	IJoinGroupList newJoinGroupList(IMember member, IGroup group);
-
-	IJoinEventList newJoinEventList(IMember member, IEvent event);
-
-	IHoldEventList newHoldEventList(IGroup group, IEvent event);
 
 }

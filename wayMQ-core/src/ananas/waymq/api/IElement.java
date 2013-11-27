@@ -4,7 +4,8 @@ import ananas.xgit.repo.ObjectId;
 
 public interface IElement {
 
+	IDocument getDocument();
+
 	ObjectId getId();
 
-	IDocument getDocument();
 }

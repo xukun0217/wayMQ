@@ -9,6 +9,7 @@ import ananas.blueprint4.terminal.ExecuteContext;
 import ananas.waymq.api.IDocument;
 import ananas.waymq.api.IElement;
 import ananas.waymq.api.IMember;
+import ananas.waymq.api.IUser;
 
 public class ListSubs implements Command {
 
@@ -17,7 +18,7 @@ public class ListSubs implements Command {
 
 		MyGlobal global = new MyGlobal(context);
 		IDocument doc = global.getDocument();
-		IMember root = doc.getRoot();
+		IUser root = doc.getRoot();
 		PrintStream out = context.getTerminal().getOutput();
 
 		Enumeration<IElement> iter = doc.objects();
