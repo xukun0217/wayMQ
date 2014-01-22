@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends Activity {
+public class StartActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_start);
+
+		startActivity(new Intent(this, DebugActivity.class));
 	}
 
 	@Override
@@ -25,9 +27,9 @@ public class MainActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		final int id = item.getItemId();
-		if (id == R.id.action_sel_member) {
+		if (id == R.id.action_debug) {
 
-			this.startActivity(new Intent(this, MemberListActivity.class));
+			startActivity(new Intent(this, DebugActivity.class));
 
 		} else {
 			return super.onOptionsItemSelected(item);
