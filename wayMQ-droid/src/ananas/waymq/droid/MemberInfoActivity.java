@@ -1,7 +1,7 @@
 package ananas.waymq.droid;
 
-import ananas.waymq.droid.core.CoreAgent;
-import ananas.waymq.droid.core.IMember;
+import ananas.waymq.droid.api.CoreAgent;
+import ananas.waymq.droid.api.IMember;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;

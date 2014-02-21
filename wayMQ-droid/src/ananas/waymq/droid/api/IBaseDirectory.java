@@ -4,6 +4,8 @@ import java.io.File;
 
 public interface IBaseDirectory {
 
-	File toFile();
+	File getPath();
+
+	File getMembersDirectory();
 
 }

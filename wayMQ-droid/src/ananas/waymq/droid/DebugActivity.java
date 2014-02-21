@@ -12,8 +12,8 @@ public class DebugActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_debug);
-		
-		this.startActivity(new Intent(this, SignActivity.class));
+
+		this.startActivity(new Intent(this, MemberListActivity.class));
 
 	}
 

@@ -1,19 +1,31 @@
 package ananas.waymq.droid;
 
-import ananas.waymq.droid.api.ICoreApi;
-import ananas.waymq.droid.core.CoreAgent;
-import ananas.waymq.droid.core.IMember;
+import java.util.List;
+
+import ananas.waymq.droid.api.CoreAgent;
+import ananas.waymq.droid.api.FindMembersHandler;
+import ananas.waymq.droid.api.IMember;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
-public class MemberListActivity extends Activity {
+public class MemberListActivity extends Activity implements FindMembersHandler,
+		TextWatcher {
 
-	private CoreAgent _ca;
+	private CoreAgent _ctrl;
 
 	private Button _btn_add;
 	private ListView _list_members;
@@ -23,26 +35,37 @@ public class MemberListActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_member_list);
-		this._ca = new CoreAgent(this);
-
+		this._ctrl = new CoreAgent(this);
+		this._ctrl.onCreate(savedInstanceState);
+		// ui components
 		this._list_members = (ListView) this.findViewById(R.id.list_members);
 		this._btn_add = (Button) this.findViewById(R.id.btn_add);
 		this._edit_search = (EditText) this.findViewById(R.id.edit_search);
-
-		ListAdapter adapter = this.__find_members(null);
-		this._list_members.setAdapter(adapter);
+		// event handler
+		this._btn_add.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				MemberListActivity.this.onClickButtonAdd();
+			}
+		});
+		this._edit_search.addTextChangedListener(this);
+		// init
+		this._ctrl.getCore().load();
 	}
 
-	private ListAdapter __find_members(String keyword) {
+	protected void onClickButtonAdd() {
+		Intent intent = new Intent(this, MemberAddActivity.class);
+		this.startActivityForResult(intent, 0);
+	}
 
-		ICoreApi core = this._ca.getCore();
-		IMember[] rlt = core.getMembers();
-		MyItem[] array = new MyItem[rlt.length];
-		for (int i = rlt.length - 1; i >= 0; i--) {
-			array[i] = new MyItem(rlt[i]);
-		}
-		int res = android.R.layout.simple_list_item_1;
-		return new android.widget.ArrayAdapter<MyItem>(this, res, array);
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	private void __find_members(String keyword) {
+		FindMembersHandler callback = this;
+		this._ctrl.findMembers(keyword, callback);
 	}
 
 	class MyItem {
@@ -54,15 +77,59 @@ public class MemberListActivity extends Activity {
 		}
 
 		public String toString() {
-			return this._mem.getName();
+			String phone = _mem.getPhone();
+			String name = _mem.getName();
+			return phone + " " + name;
 		}
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+
+	@Override
+	public void onFindMembers(String keyword, List<IMember> rlt) {
+		MyItem[] array = new MyItem[rlt.size()];
+		for (int i = 0; i < array.length; i++) {
+			array[i] = new MyItem(rlt.get(i));
+		}
+		ListAdapter adapter = new ArrayAdapter<MyItem>(this,
+				android.R.layout.simple_list_item_1, array);
+		this._list_members.setAdapter(adapter);
+		this._list_members.refreshDrawableState();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		this._ctrl.onPause();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		this._ctrl.onResume();
+
+		this._edit_search.setText("");
+		this.__find_members(null);
+
+	}
+
+	@Override
+	public void afterTextChanged(Editable edit) {
+		String s = edit.toString();
+		this.__find_members(s);
+	}
+
+	@Override
+	public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+			int arg3) {
+	}
+
+	@Override
+	public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
 	}
 
 }
