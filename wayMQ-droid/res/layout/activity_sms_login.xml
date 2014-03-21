@@ -1,0 +1,48 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    tools:context=".StartActivity" >
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.4"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="wayMQ"
+        android:textColor="#000000"
+        android:textSize="50sp" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/text_info"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:layout_weight="0.4"
+        android:gravity="center"
+        android:text="(info ...)"
+        android:textColor="#000000"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/button_login"
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:layout_margin="60dp"
+        android:text="Login"
+        android:textColor="#000000"
+        android:textSize="20sp" />
+
+</LinearLayout>

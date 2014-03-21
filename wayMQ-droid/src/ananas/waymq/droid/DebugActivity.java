@@ -13,7 +13,8 @@ public class DebugActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_debug);
 
-		this.startActivity(new Intent(this, MemberListActivity.class));
+		// this.startActivity(new Intent(this, MemberListActivity.class));
+		this.startActivity(new Intent(this, SmsLoginActivity.class));
 
 	}
 
