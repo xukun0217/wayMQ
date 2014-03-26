@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Puya wayMQ SP</title>
+
+
+<script type="text/javascript" src="js/jquery.js"></script>
+
+<script type="text/javascript">
+	function show_panel(id) {
+		$(id).show();
+	}
+	function hide_panel(id) {
+		$(id).hide();
+	}
+
+	function refreshEventPanel() {
+		//		alert("refreshEventPanel");
+		var url = "json_request?do=get&class=event";
+		$.getJSON(url, function(json, statusText, xhr) {
+			$("#event_info").text(json);
+		});
+	}
+
+	function setCurrentPanel(id) {
+		hide_panel("#login");
+		hide_panel("#register");
+		hide_panel("#event");
+		hide_panel("#group");
+		hide_panel("#account");
+		show_panel(id);
+
+		if (id == "#event") {
+			refreshEventPanel();
+		}
+
+	}
+
+	function doRegister() {
+		var phone = $("#register_phone").text();
+		var nickname = $("#register_nickname").text();
+		alert("Register\nphone : " + phone + "\nnickname : " + nickname);
+	}
+	function doLogin() {
+		var phone = $("#login_phone").text();
+		alert("Login\nphone : " + phone);
+	}
+
+	function doEventJoin() {
+	}
+	function doEventCancel() {
+	}
+
+	function setupButtonHandler() {
+
+		$("#login_do_reg").click(function() {
+			setCurrentPanel("#register");
+		});
+		$("#login_do_login").click(function() {
+			doLogin();
+		});
+
+		$("#register_do_login").click(function() {
+			setCurrentPanel("#login");
+		});
+		$("#register_do_register").click(function() {
+			doRegister();
+		});
+
+		$("#event_join").click(function() {
+			doEventJoin();
+		});
+		$("#event_cancel").click(function() {
+			doEventCancel();
+		});
+
+	}
+
+	$(document).ready(function() {
+
+		//	setCurrentPanel("#login");
+		setCurrentPanel("#event");
+
+		refreshEventPanel();
+
+		setupButtonHandler();
+
+	});
+</script>
+
+<style type="text/css">
+body {
+	margin: 0px;
+	background: #000000;
+}
+
+div.HeadFootBar {
+	background: #159951;
+	width: 100%;
+	padding: 20px;
+}
+
+div.ClientBox {
+	background: #ffffff;
+	padding: 10px;
+}
+
+h2.PanelTitle {
+	
+}
+</style>
+
+
+
+
+</head>
+<body>
+
+	<div id='page'>
+
+		<div id='header' class="HeadFootBar">
+			<h1>wayMQ</h1>
+		</div>
+
+		<div class='ClientBox'>
+
+			<div id='debug' class='Panel'>
+				<h2 class='PanelTitle'>debug</h2>
+				<button id='debug_button_login'>login</button>
+				<button id='debug_button_register'>register</button>
+			</div>
+
+
+			<div id='register' class='Panel'>
+				<h2 class='PanelTitle'>注册</h2>
+				<div>
+					手机号： <input id='register_phone' type="text" />
+				</div>
+				<div>
+					昵称： <input id='register_nickname' type="text" />
+				</div>
+				<button id='register_do_register'>注册</button>
+				<a id='register_do_login' href='#'>已经注册过了？</a>
+			</div>
+
+			<div id='login' class='panel'>
+				<h2 class='PanelTitle'>登录</h2>
+				<div>
+					手机号： <input id='login_phone' type="text" />
+				</div>
+				<button id='login_do_login'>登录</button>
+				<a id='login_do_reg' href='#'>还没有帐号？</a>
+			</div>
+
+
+
+			<div id='group' class='panel'>
+				<h2 class='PanelTitle'>group</h2>
+			</div>
+
+			<div id='event' class='panel'>
+				<h2 class='PanelTitle'>群活动</h2>
+				<div id='event_info'></div>
+				<button id='event_join'>报名参加</button>
+				<button id='event_cancel'>取消报名</button>
+			</div>
+
+			<div id='account' class='panel'>
+				<h2 class='PanelTitle'>account</h2>
+			</div>
+		</div>
+
+		<div id='footer' class="HeadFootBar">(C)2014 puyatech.com</div>
+
+
+	</div>
+</body>
+</html>

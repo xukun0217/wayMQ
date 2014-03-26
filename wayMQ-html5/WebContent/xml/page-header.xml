@@ -1,0 +1,12 @@
+
+<html>
+
+
+<body>
+
+	<div id="header_bar" class="HeaderBar">
+		<h1>wayMQ</h1>
+		<div id="header_account">Login</div>
+	</div>
+</body>
+</html>

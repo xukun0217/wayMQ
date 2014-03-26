@@ -2,33 +2,29 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
 
-<script>
-	function doInit() {
-		//	var attr = document.attributes;
-		//	alert(attr);
-	}
+
+<link rel="stylesheet" type="text/css" href="style/waymq.css" />
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/waymq.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		loadPageHeader("#header");
+	});
 </script>
 
-</head>
-<body onload='doInit()'>
+<title>Puya wayMQ</title>
 
+</head>
+<body>
 
 	<div>
-		<div>
-			<div>兴趣组：</div>
-			<div>WAYMQ</div>
-		</div>
+
+		<div id="header"></div>
 
 		<div>
-			<div id='event'>活动...</div>
-			<div>
-				<button id='join' type='button'>报名参加</button>
-			</div>
+			goto: <a href='group/12345678'>我爱羽毛球</a>
 		</div>
-
 	</div>
-
 </body>
 </html>
