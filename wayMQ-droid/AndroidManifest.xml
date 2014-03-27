@@ -9,8 +9,8 @@
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:allowBackup="true"
@@ -30,8 +30,13 @@
         <activity android:name="MemberInfoActivity" />
         <activity android:name="MemberListActivity" />
         <activity android:name="SmsLoginActivity" />
+        <activity android:name="SmsRegisterActivity" />
         <activity android:name="DebugActivity" />
         <activity android:name="SignActivity" />
+        <activity android:name="EventActivity" />
+
+        <service android:name="WayMQService" >
+        </service>
     </application>
 
 </manifest>

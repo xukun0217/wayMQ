@@ -14,7 +14,8 @@ public class DebugActivity extends Activity {
 		setContentView(R.layout.activity_debug);
 
 		// this.startActivity(new Intent(this, MemberListActivity.class));
-		this.startActivity(new Intent(this, SmsLoginActivity.class));
+		// this.startActivity(new Intent(this, SmsLoginActivity.class));
+		this.startActivity(new Intent(this, EventActivity.class));
 
 	}
 

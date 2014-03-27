@@ -24,44 +24,55 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_debug=0x7f08001c;
-        public static final int action_sel_member=0x7f08001b;
-        public static final int action_settings=0x7f08001a;
-        public static final int action_sign=0x7f080019;
+        public static final int action_debug=0x7f080025;
+        public static final int action_sel_member=0x7f080024;
+        public static final int action_settings=0x7f080023;
+        public static final int action_sign=0x7f080022;
         public static final int box_body=0x7f080002;
+        public static final int box_event_info=0x7f080005;
+        public static final int box_foot=0x7f08000a;
         public static final int box_head=0x7f080001;
-        public static final int box_item_head=0x7f080011;
-        public static final int box_item_money=0x7f080013;
-        public static final int btn_add=0x7f080004;
-        public static final int btn_pay=0x7f08000a;
-        public static final int button_login=0x7f080018;
-        public static final int button_select_member=0x7f08000e;
-        public static final int button_sign=0x7f08000f;
-        public static final int edit_key_word=0x7f080008;
-        public static final int edit_money=0x7f080009;
-        public static final int edit_name=0x7f080007;
-        public static final int edit_phone=0x7f080006;
-        public static final int edit_search=0x7f08000c;
-        public static final int list_history=0x7f08000b;
-        public static final int list_members=0x7f08000d;
-        public static final int numberPicker_head_x1=0x7f080012;
-        public static final int numberPicker_money_x1=0x7f080015;
-        public static final int numberPicker_money_x10=0x7f080014;
-        public static final int progress_bar=0x7f080016;
+        public static final int box_item_head=0x7f08001a;
+        public static final int box_item_money=0x7f08001c;
+        public static final int btn_add=0x7f08000d;
+        public static final int btn_pay=0x7f080013;
+        public static final int button_cancel=0x7f08000c;
+        public static final int button_join=0x7f08000b;
+        public static final int button_login=0x7f080021;
+        public static final int button_select_member=0x7f080017;
+        public static final int button_sign=0x7f080018;
+        public static final int edit_key_word=0x7f080011;
+        public static final int edit_money=0x7f080012;
+        public static final int edit_name=0x7f080010;
+        public static final int edit_phone=0x7f08000f;
+        public static final int edit_search=0x7f080015;
+        public static final int list_history=0x7f080014;
+        public static final int list_join=0x7f080009;
+        public static final int list_members=0x7f080016;
+        public static final int numberPicker_head_x1=0x7f08001b;
+        public static final int numberPicker_money_x1=0x7f08001e;
+        public static final int numberPicker_money_x10=0x7f08001d;
+        public static final int progress_bar=0x7f08001f;
         public static final int root=0x7f080000;
-        public static final int scrollView1=0x7f080005;
-        public static final int text_info=0x7f080017;
-        public static final int text_phone_number=0x7f080010;
+        public static final int scrollView1=0x7f08000e;
+        public static final int textView1=0x7f080004;
+        public static final int text_event_content=0x7f080008;
+        public static final int text_event_time=0x7f080007;
+        public static final int text_event_title=0x7f080006;
+        public static final int text_info=0x7f080020;
+        public static final int text_phone_number=0x7f080019;
         public static final int text_title=0x7f080003;
     }
     public static final class layout {
         public static final int activity_debug=0x7f030000;
-        public static final int activity_member_add=0x7f030001;
-        public static final int activity_member_info=0x7f030002;
-        public static final int activity_member_list=0x7f030003;
-        public static final int activity_sign=0x7f030004;
-        public static final int activity_sms_login=0x7f030005;
-        public static final int activity_start=0x7f030006;
+        public static final int activity_event=0x7f030001;
+        public static final int activity_member_add=0x7f030002;
+        public static final int activity_member_info=0x7f030003;
+        public static final int activity_member_list=0x7f030004;
+        public static final int activity_sign=0x7f030005;
+        public static final int activity_sms_login=0x7f030006;
+        public static final int activity_sms_register=0x7f030007;
+        public static final int activity_start=0x7f030008;
     }
     public static final class menu {
         public static final int debug=0x7f070000;
@@ -70,7 +81,10 @@ public final class R {
     public static final class string {
         public static final int action_settings=0x7f050001;
         public static final int app_name=0x7f050000;
+        public static final int cancel=0x7f050005;
+        public static final int event=0x7f050003;
         public static final int hello_world=0x7f050002;
+        public static final int join=0x7f050004;
     }
     public static final class style {
         /** 
