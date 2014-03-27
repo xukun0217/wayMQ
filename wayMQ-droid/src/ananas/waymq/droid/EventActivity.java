@@ -76,6 +76,7 @@ public class EventActivity extends Activity {
 		this._agent.runInBackground(new BackgroundTask() {
 
 			private Map<String, String> _param;
+			private JSONObject _json;
 
 			@Override
 			public void onStart(ForegroundContext fc) {
@@ -87,8 +88,9 @@ public class EventActivity extends Activity {
 
 			@Override
 			public void onProcess(BackgroundContext bc) {
-				// TODO Auto-generated method stub
-
+				ServiceAgent agent = bc.getServiceAgent();
+				Map<String, String> param = this._param;
+				this._json = agent.requestJSON("POST", param);
 			}
 
 			@Override
@@ -102,6 +104,7 @@ public class EventActivity extends Activity {
 		this._agent.runInBackground(new BackgroundTask() {
 
 			private Map<String, String> _param;
+			private JSONObject _json;
 
 			@Override
 			public void onStart(ForegroundContext fc) {
@@ -113,8 +116,9 @@ public class EventActivity extends Activity {
 
 			@Override
 			public void onProcess(BackgroundContext bc) {
-				// TODO Auto-generated method stub
-
+				ServiceAgent agent = bc.getServiceAgent();
+				Map<String, String> param = this._param;
+				this._json = agent.requestJSON("POST", param);
 			}
 
 			@Override
