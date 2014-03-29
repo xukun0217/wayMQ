@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+
+
+<style type="text/css"></style>
+
+<script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript">
+	var context = new Object();
+	context.event_id = "default";
+	context.member_id = "default";
+
+	function debugShowJSON(json) {
+		var str = JSON.stringify(json);
+		$("#text_debug_json_output").text(str);
+	}
+
+	function showPage(id) {
+		$("#page_event_home").hide();
+		$("#page_event_new").hide();
+		$("#page_event_join").hide();
+		$("#page_event_cancel").hide();
+		$("#page_group_home").hide();
+		$(id).show();
+	}
+
+	function showPageEventNew() {
+		showPage("#page_event_new");
+
+	}
+
+	function showPageGroupHome() {
+		showPage("#page_group_home");
+
+	}
+
+	function showPageEventHome() {
+		showPage("#page_event_home");
+
+		$("#text_event_info_output").text("loading...");
+
+		var url = "?do=getEventInfo";
+		url = url + "&event=" + context.event_id;
+
+		$.getJSON(url, function(json, statusText, xhr) {
+			//	$("#text_event_info_output").text(json);
+			debugShowJSON(json);
+		});
+
+	}
+
+	function createNewEvent() {
+
+		var title = $("#edit_new_event_title").val();
+		var content = $("#edit_new_event_content").val();
+
+		title = encodeURIComponent(title);
+		content = encodeURIComponent(content);
+
+		var url = "?do=newEvent";
+		url = url + "&title=" + title;
+		url = url + "&content=" + content;
+		$.getJSON(url, function(json, statusText, xhr) {
+			debugShowJSON(json);
+		});
+	}
+
+	function setupButtonHandler() {
+
+		$("#button_show_event_home").click(function() {
+			showPageEventHome();
+		});
+		$("#button_show_event_new").click(function() {
+			showPageEventNew();
+		});
+		$("#button_show_group_home").click(function() {
+			showPageGroupHome();
+		});
+
+		$("#button_create_event").click(function() {
+			createNewEvent();
+		});
+
+	}
+
+	$(document).ready(function() {
+
+		//	setCurrentPanel("#login");
+		showPageEventHome();
+
+		setupButtonHandler();
+
+	});
+</script>
+
+</head>
+<body>
+
+	<h1>waymq-html5-lite-final</h1>
+
+
+	<div id='page_debug_home' class='page'>
+		<hr />
+		<h2>debug</h2>
+
+		<button id='button_show_event_home'>show event home</button>
+		<button id='button_show_event_new'>show event new</button>
+		<button id='button_show_group_home'>show group home</button>
+
+		<div id='text_debug_json_output'>(JSON-output)</div>
+
+
+	</div>
+
+
+	<div id='page_group_home' class='page'>
+		<hr />
+		<h2>特别兴趣小组</h2>
+	</div>
+
+
+	<div id='page_event_new' class='page'>
+		<hr />
+		<h2>新建活动</h2>
+
+		<div>标题</div>
+		<div>
+			<input id='edit_new_event_title' type='text' value='标题' />
+		</div>
+		<div>内容</div>
+		<div>
+			<input id='edit_new_event_content' type='text' value='内容' />
+		</div>
+
+		<button id='button_create_event'>Create Event</button>
+
+	</div>
+
+
+	<div id='page_event_home' class='page'>
+		<hr />
+		<h2>活动</h2>
+		<div id='text_event_info_output'>output</div>
+
+	</div>
+
+	<div id='page_event_join' class='page'>
+		<hr />
+		<h2>参加活动</h2>
+	</div>
+	<div id='page_event_cancel' class='page'>
+		<hr />
+		<h2>退出活动</h2>
+	</div>
+
+</body>
+</html>
