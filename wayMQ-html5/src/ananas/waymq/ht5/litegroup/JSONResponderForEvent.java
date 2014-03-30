@@ -1,6 +1,7 @@
 package ananas.waymq.ht5.litegroup;
 
 import java.io.File;
+import java.util.Calendar;
 import java.util.Set;
 
 import com.alibaba.fastjson.JSONArray;
@@ -42,6 +43,7 @@ public class JSONResponderForEvent implements JSONResponder {
 	}
 
 	private JSONObject buildOutput(RequestContext rc, DaoForEvent dao) {
+		JSONObject group = dao.getGroupDao().loadInfo();
 		JSONObject json = dao.loadInfo();
 		JSONArray joinList = new JSONArray();
 		File[] jfs = dao.listJoinFile();
@@ -49,7 +51,14 @@ public class JSONResponderForEvent implements JSONResponder {
 			JSONObject join = dao.loadJoinShip(jf);
 			joinList.add(join);
 		}
+		// adds
 		json.put("join", joinList);
+		Helper.genStringByTime(json, "time_open");
+		{
+			String groupName = group.getString("title");
+			json.put("group_title", groupName);
+		}
+		// save
 		dao.saveOutput(json);
 		return json;
 	}
@@ -99,6 +108,52 @@ public class JSONResponderForEvent implements JSONResponder {
 			_inst = new JSONResponderForEvent();
 		}
 		return _inst;
+	}
+
+	static class Helper {
+
+		public static void genStringByTime(JSONObject json, String key) {
+			Object obj = json.get(key);
+			if (obj == null)
+				return;
+			long time = json.getLongValue(key);
+			json.put(key + "_text", timeToString(time));
+		}
+
+		final static String[] weekday = { "日", "一", "二", "三", "四", "五", "六" };
+
+		public static String timeToString(long time) {
+
+			StringBuilder sb = new StringBuilder();
+			Calendar cal = Calendar.getInstance();
+			cal.setTimeInMillis(time);
+
+			int h, m, s, yy, mm, dd;
+			yy = cal.get(Calendar.YEAR);
+			mm = cal.get(Calendar.MONTH) + 1;
+			dd = cal.get(Calendar.DAY_OF_MONTH);
+			int week = cal.get(Calendar.DAY_OF_WEEK);
+			h = cal.get(Calendar.HOUR_OF_DAY);
+			m = cal.get(Calendar.MINUTE);
+			s = cal.get(Calendar.SECOND);
+
+			sb.append(yy);
+			sb.append('-');
+			sb.append(mm);
+			sb.append('-');
+			sb.append(dd);
+
+			sb.append("(" + weekday[week % weekday.length] + ")");
+
+			sb.append(h);
+			sb.append(':');
+			sb.append(m);
+			sb.append(':');
+			sb.append(s);
+
+			return sb.toString();
+		}
+
 	}
 
 }

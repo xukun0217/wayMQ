@@ -87,4 +87,8 @@ public class DaoForEvent {
 		Util.saveJsonToFile(json, file);
 	}
 
+	public DaoForGroup getGroupDao() {
+		File path = this._path.getParentFile();
+		return new DaoForGroup(path);
+	}
 }

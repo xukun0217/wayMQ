@@ -16,6 +16,7 @@ import com.alibaba.fastjson.JSONObject;
 public class Util {
 
 	public static boolean checkPhoneNumber(String phone) {
+		int cnt = 0;
 		char[] chs = phone.toCharArray();
 		for (char ch : chs) {
 			switch (ch) {
@@ -26,13 +27,14 @@ public class Util {
 				break;
 			default:
 				if ('0' <= ch && ch <= '9') {
+					cnt++;
 				} else {
 					return false;
 				}
 				break;
 			}
 		}
-		return true;
+		return (cnt == 11); // supports 11 digits phone number only, now
 	}
 
 	public static String normalizePhoneNumber(String phone) {
