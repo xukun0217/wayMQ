@@ -1,0 +1,281 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+
+
+<style type="text/css"></style>
+
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript">
+	var context = new Object();
+	context.event_id = "default";
+	context.member_id = "default";
+	context.event_info = null;
+	context.mode = "normal"; // debug|normal|all
+
+	function debugShowJSON(json) {
+		var str = JSON.stringify(json);
+		$("#text_debug_json_output").text(str);
+	}
+
+	function showPage(id) {
+
+		if (context.mode != "all") {
+			$("#page_event_home").hide();
+			$("#page_event_leave").hide();
+			$("#page_event_join").hide();
+			if (context.mode == "debug") {
+				$("#page_debug_home").show();
+			} else {
+				$("#page_debug_home").hide();
+			}
+		}
+		$(id).show();
+	}
+
+	function showPageEventLeave() {
+		showPage("#page_event_leave");
+
+		var title = context.event_info.title;
+		$("#text_event_leave_title").text(title);
+
+	}
+
+	function showPageEventJoin() {
+		showPage("#page_event_join");
+
+		var title = context.event_info.title;
+		$("#text_event_join_title").text(title);
+
+	}
+
+	function showPageEventHome() {
+		showPage("#page_event_home");
+		$("#list_join_temp").hide();
+		$("#text_event_info_output").text("loading...");
+		var url = "?do=get";
+		$.getJSON(url, function(json, statusText, xhr) {
+			debugShowJSON(json);
+			context.event_info = json;
+			$("#text_event_title").text(json.title);
+			$("#text_event_content").text(json.content);
+			$("#text_event_open_time").text(json.time_open_text);
+			$("#text_group_title").text(json.group_title);
+			updateJoinList(json.join);
+		});
+	}
+
+	function updateJoinList(array) {
+
+		var strlist = new Array();
+		{
+			// 把取消了的放在末尾
+			var strlist2 = new Array();
+			var i = 0;
+			var cnt = array.length;
+			for (i = 0; i < cnt; i++) {
+				var item = array[i];
+				var str = item.nickname;
+				if (item.join) {
+					strlist.push(str);
+				} else {
+					str = str + "(已取消报名)";
+					strlist2.push(str);
+				}
+			}
+			cnt = strlist2.length;
+			for (i = 0; i < cnt; i++) {
+				var str = strlist2[i];
+				strlist.push(str);
+			}
+		}
+
+		var ol0 = $("#list_join");
+		var li0 = $("#list_join_item");
+		ol0.empty();
+
+		var i = 0;
+		var cnt = strlist.length;
+		for (i = 0; i < cnt; i++) {
+			var str = strlist[i];
+			var li = li0.clone();
+			li.text(str);
+			li.attr("id", null);
+			ol0.append(li);
+		}
+		//	alert("count items : " + i);
+	}
+
+	function doJoinEvent() {
+		var phone = $("#edit_join_phone").val();
+		var nickname = $("#edit_join_nickname").val();
+
+		var url = "?do=join";
+		url = url + "&phone=" + phone;
+		url = url + "&nickname=" + nickname;
+		$.getJSON(url, function(json, statusText, xhr) {
+			debugShowJSON(json);
+			alert("已报名！");
+			showPageEventHome();
+		});
+	}
+
+	function doLeaveEvent() {
+		var phone = $("#edit_leave_phone").val();
+		var url = "?do=leave";
+		url = url + "&phone=" + phone;
+		$.getJSON(url, function(json, statusText, xhr) {
+			debugShowJSON(json);
+			alert("已取消报名！");
+			showPageEventHome();
+		});
+	}
+
+	function setupButtonHandler() {
+
+		$("#button_show_event_home").click(function() {
+			showPageEventHome();
+		});
+		$("#button_show_event_join").click(function() {
+			showPageEventJoin();
+		});
+		$("#button_show_event_leave").click(function() {
+			showPageEventLeave();
+		});
+
+		$("#button_event_join").click(function() {
+			doJoinEvent();
+		});
+		$("#button_event_leave").click(function() {
+			doLeaveEvent();
+		});
+
+		$("#button_home_join").click(function() {
+			showPageEventJoin();
+		});
+		$("#button_home_leave").click(function() {
+			showPageEventLeave();
+		});
+
+		$("#text_event_title").click(function() {
+			showPageEventHome();
+		});
+
+	}
+
+	$(document).ready(function() {
+
+		//	setCurrentPanel("#login");
+		showPageEventHome();
+
+		setupButtonHandler();
+
+	});
+</script>
+
+</head>
+<body>
+
+
+
+	<div id='page_debug_home' class='page'>
+		<hr />
+		<h2>debug</h2>
+
+		<button id='button_show_event_home'>show event home</button>
+		<button id='button_show_event_join'>show event join</button>
+		<button id='button_show_event_leave'>show event leave</button>
+
+		<div id='text_debug_json_output'>(JSON-output)</div>
+
+		<hr />
+
+	</div>
+
+	<div id='header'>
+
+		<div>
+			<h2>
+				<span>兴趣组: </span> <a id='text_group_title' href="./#">group_title</a>
+			</h2>
+		</div>
+		<div>
+			<h2>
+				<span> 活动:</span><a id='text_event_title' href="#">event_title</a>
+			</h2>
+		</div>
+		<div>
+			开始时间:<span id='text_event_open_time'>yyyy-mm-dd</span>
+		</div>
+
+	</div>
+
+	<div id='page_event_home' class='page'>
+		<hr />
+
+		<div id='text_event_content'>content</div>
+
+
+		<div>
+			<button id='button_home_join'>报名参加</button>
+			<button id='button_home_leave'>取消报名</button>
+		</div>
+
+
+		<div>
+			<div>报名名单:</div>
+			<ol id='list_join'>
+			</ol>
+			<ol id='list_join_temp'>
+				<li id='list_join_item'>bill</li>
+				<li>lilei</li>
+				<li>mike</li>
+			</ol>
+		</div>
+
+	</div>
+
+	<div id='page_event_join' class='page'>
+		<hr />
+
+
+		<div>
+			<div>要报名参加活动，先输入你的手机号和昵称，然后按“报名参加”按钮。</div>
+			<div>
+				手机号 <input id='edit_join_phone' />
+			</div>
+			<div>
+				江湖人称 <input id='edit_join_nickname' />
+			</div>
+			<div>
+				<button id='button_event_join'>报名参加</button>
+			</div>
+			<div>
+				<a href='#' onclick='showPageEventHome()'>返回</a>
+			</div>
+
+		</div>
+
+
+	</div>
+	<div id='page_event_leave' class='page'>
+		<hr />
+
+		<div>
+			<div>要取消参加活动，先输入你的手机号，然后按“取消报名”按钮。</div>
+			<div>
+				手机号 <input id='edit_leave_phone' />
+			</div>
+			<div>
+				<button id='button_event_leave'>取消报名</button>
+			</div>
+			<div>
+				<a href='#' onclick='showPageEventHome()'>返回</a>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
