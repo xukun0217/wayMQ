@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>微麦可#活动终结者</title>
+
+
+<link href="./css/bootstrap.css" rel="stylesheet">
+<link href="./css/signin.css" rel="stylesheet">
+
+<script type="text/javascript" src="./js/jquery.js"></script>
+<script type="text/javascript">
+	function showView(id) {
+
+		$("#view_debug").hide();
+
+		$("#view_event_detail").hide();
+		$("#view_join_event").hide();
+		$("#view_exit_event").hide();
+
+		$(id).show();
+	}
+
+	function onClickButtonShowJoin() {
+		showView("#view_join_event");
+	}
+	function onClickButtonShowExit() {
+		showView("#view_exit_event");
+	}
+	function onClickButtonShowDetail() {
+		showView("#view_event_detail");
+	}
+
+	function doJoinEvent() {
+
+		var phone = $("#edit_join_event_phone").val();
+		var nickname = $("#edit_join_event_nickname").val();
+		var count = $("#edit_join_event_count").val();
+
+		alert("join\nphone:" + phone + "\nname:" + nickname + "\ncount:"
+				+ count);
+	}
+	function doExitEvent() {
+
+		var phone = $("#edit_exit_event_phone").val();
+
+		alert("exit\nphone:" + phone);
+
+	}
+
+	function refreshEventInfo() {
+
+		var url = newBaseURL("getEventInfo");
+		url = url + "";
+
+		$.getJSON(url, function(data) {
+			var str = JSON.stringify(data);
+			alert(str);
+		});
+
+	}
+
+	function newBaseURL() {
+		var url = "do?event_id=";
+		return url;
+	}
+
+	function setupButton() {
+
+		$("#button_debug_show_detail").click(onClickButtonShowDetail);
+		$("#button_debug_show_join").click(onClickButtonShowJoin);
+		$("#button_debug_show_exit").click(onClickButtonShowExit);
+		$("#button_show_detail_exit").click(onClickButtonShowDetail);
+		$("#button_show_detail_join").click(onClickButtonShowDetail);
+		$("#button_show_join").click(onClickButtonShowJoin);
+		$("#button_show_exit").click(onClickButtonShowExit);
+
+		$("#button_join_event").click(doJoinEvent);
+		$("#button_exit_event").click(doExitEvent);
+	}
+
+	$(document).ready(function() {
+
+		setupButton();
+
+	});
+</script>
+
+</head>
+<body>
+
+	<div class="container">
+		<form class="form-signin" role="form">
+
+			<div id="view_debug">
+
+
+				<div>微麦可#活动终结者::event</div>
+
+				<h2 class="form-signin-heading">Debug</h2>
+
+				<div>
+					<a id="button_debug_refresh_info" href="#"
+						class="btn btn-lg btn-primary btn-block">refresh_info</a>
+				</div>
+				<div>
+					<a id="button_debug_show_detail" href="#"
+						class="btn btn-lg btn-primary btn-block">show_detail</a>
+				</div>
+				<div>
+					<a id="button_debug_show_join" href="#"
+						class="btn btn-lg btn-primary btn-block">show_join</a>
+				</div>
+				<div>
+					<a id="button_debug_show_exit" href="#"
+						class="btn btn-lg btn-primary btn-block">show_exit</a>
+				</div>
+			</div>
+
+
+			<div id="view_event_overview">
+				<div>我爱羽毛球</div>
+				<div>2014-04-14</div>
+				<div>搞球</div>
+			</div>
+
+			<div id="view_event_detail">
+				<h2 class="form-signin-heading">
+					活动详情( <a id="button_show_join" href="#">报名</a>/<a
+						id="button_show_exit" href="#">取消</a> )
+				</h2>
+
+			</div>
+
+
+			<div id="view_join_event">
+
+				<!-- join event -->
+
+
+				<h2 class="form-signin-heading">
+					参加活动(<a id="button_show_detail_join" href="#">详情</a>)
+				</h2>
+
+				<!-- title -->
+				<input id="edit_join_event_phone" type="text" class="form-control"
+					placeholder="手机号" value="13012345678" required autofocus>
+				<!-- time -->
+				<input id="edit_join_event_nickname" type="text"
+					class="form-control" placeholder="昵称" value="迈克" required>
+				<input id="edit_join_event_count" type="text" class="form-control"
+					placeholder="人数" value="1" required>
+
+				<div style="height: 50px"></div>
+
+				<!-- button -->
+				<a id="button_join_event" href="#"
+					class="btn btn-lg btn-primary btn-block">报名</a>
+
+
+
+			</div>
+
+
+			<div id="view_exit_event">
+
+				<!-- exit event -->
+
+
+				<h2 class="form-signin-heading">
+					退出活动(<a id="button_show_detail_exit" href="#">详情</a>)
+				</h2>
+
+				<!-- phone -->
+				<input id="edit_exit_event_phone" type="text" class="form-control"
+					placeholder="手机号" value="13012345678" required autofocus>
+
+				<div style="height: 50px"></div>
+
+				<!-- button -->
+				<a id="button_exit_event" href="#"
+					class="btn btn-lg btn-primary btn-block">取消报名</a>
+
+
+
+			</div>
+		</form>
+	</div>
+
+</body>
+</html>

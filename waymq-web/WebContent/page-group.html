@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>微麦可#活动终结者</title>
+
+<link href="./css/bootstrap.css" rel="stylesheet">
+<link href="./css/signin.css" rel="stylesheet">
+
+<script type="text/javascript" src="./js/jquery.js"></script>
+<script type="text/javascript">
+	function setupButtonHandler() {
+
+		$("#button_create_event").click(function() {
+
+			createEvent();
+
+		});
+
+	}
+
+	function createEvent() {
+
+		var title = $("#edit_title").val();
+		var time = $("#edit_time").val();
+		var content = $("#edit_content").val();
+
+		var url = "do?class=WAYMQ";
+		url = url + "&do=" + "newEvent";
+		url = url + "&title=" + title;
+		url = url + "&time=" + time;
+		url = url + "&content=" + content;
+
+		$.getJSON(url, function(data) {
+			var str = JSON.stringify(data);
+			alert(str);
+		});
+
+	}
+
+	$(document).ready(function() {
+
+		setupButtonHandler();
+
+	});
+</script>
+
+</head>
+<body>
+
+	<div>微麦可#活动终结者::group</div>
+
+	<div id="view_create_event">
+
+		<!-- new event -->
+		<form class="form-signin" role="form">
+
+
+			<h2 class="form-signin-heading">创建活动</h2>
+
+			<!-- title -->
+			<input id="edit_title" type="text" class="form-control"
+				placeholder="标题" value="aaa" required autofocus>
+			<!-- time -->
+			<input id="edit_time" type="text" class="form-control"
+				placeholder="时间" value="bbb" required>
+			<!-- content -->
+			<input id="edit_content" type="text" class="form-control"
+				placeholder="内容" value="ccc" required> <br /> <br />
+
+			<!-- button -->
+			<a id="button_create_event" href="#"
+				class="btn btn-lg btn-primary btn-block">创建</a>
+
+
+		</form>
+
+	</div>
+
+	<div id="view_list_event">
+
+		<!-- list event -->
+
+
+
+
+	</div>
+
+
+</body>
+</html>
