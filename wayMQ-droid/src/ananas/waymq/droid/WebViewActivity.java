@@ -1,8 +1,15 @@
 package ananas.waymq.droid;
 
+import ananas.waymq.droid.gap.Event;
+import ananas.waymq.droid.gap.EventListener;
+import ananas.waymq.droid.gap.GapConst;
+import ananas.waymq.droid.gap.GapCore;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,7 +21,7 @@ import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
-public class WebViewActivity extends Activity {
+public class WebViewActivity extends Activity implements EventListener {
 
 	private ProgressBar _progress;
 	private ImageButton _button_home;
@@ -44,7 +51,23 @@ public class WebViewActivity extends Activity {
 		this._web_view.setWebViewClient(new MyWebViewClient());
 		this._web_view.setWebChromeClient(new MyWebChromeClient());
 		this._web_view.getSettings().setJavaScriptEnabled(true);
-		// go
+
+		// service
+		{
+			String uri = "conf://123/456/";
+			Intent service = new Intent(this, WebViewService.class);
+			service.setData(Uri.parse(uri));
+			this.startService(service);
+		}
+
+		// reset config url
+		{
+			GapCore gc = new GapCore(this);
+			SharedPreferences sp = gc.getSharedPreferences();
+			Editor edit = sp.edit();
+			edit.remove(GapConst.Key.config_json);
+			edit.commit();
+		}
 		this.onClickHome();
 
 	}
@@ -68,12 +91,8 @@ public class WebViewActivity extends Activity {
 	}
 
 	protected void onClickHome() {
-		// TODO Auto-generated method stub
-		this._web_view.loadUrl("http://www.163.com/");
-		// this._web_view.lo
-
-		 
-		
+		MyLoadHomeTask task = new MyLoadHomeTask();
+		task.start();
 	}
 
 	class MyWebViewClient extends WebViewClient {
@@ -98,6 +117,67 @@ public class WebViewActivity extends Activity {
 	}
 
 	class MyWebChromeClient extends WebChromeClient {
+	}
+
+	class MyLoadHomeTask implements Runnable {
+
+		public void run() {
+
+			final WebViewActivity pthis = WebViewActivity.this;
+
+			GapCore ldr = new GapCore(pthis);
+			{
+				ConfigEvent event = new ConfigEvent();
+				event.loader = ldr;
+				event.isBegin = true;
+				Event.dispatch(pthis, event, pthis);
+			}
+			ldr.loadConfig();
+			{
+				ConfigEvent event = new ConfigEvent();
+				event.loader = ldr;
+				event.isEnd = true;
+				Event.dispatch(pthis, event, pthis);
+			}
+		}
+
+		public void start() {
+			(new Thread(this)).start();
+		}
+
+	}
+
+	class ConfigEvent extends Event {
+		public GapCore loader;
+		public boolean isBegin;
+		public boolean isEnd;
+	}
+
+	public void onEvent(Event event) {
+
+		if (event instanceof ConfigEvent) {
+			ConfigEvent e2 = (ConfigEvent) event;
+			this.onConfigEvent(e2);
+		}
+
+	}
+
+	private void onConfigEvent(ConfigEvent event) {
+
+		this._progress.setVisibility(event.isEnd ? View.INVISIBLE
+				: View.VISIBLE);
+
+		if (event.isEnd) {
+
+			GapCore ldr = event.loader;
+			if (ldr.getError() == null) {
+				String url = ldr.getHomePage();
+				this._web_view.loadUrl(url);
+			} else {
+			}
+
+		}
+
 	}
 
 }
