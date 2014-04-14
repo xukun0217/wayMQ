@@ -10,7 +10,8 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
+<!--     <uses-permission android:name="android.permission.SEND_SMS" /> -->
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
 
     <application
         android:allowBackup="true"
@@ -34,8 +35,17 @@
         <activity android:name="DebugActivity" />
         <activity android:name="SignActivity" />
         <activity android:name="EventActivity" />
+        <activity android:name="WebViewActivity" />
+
+        <receiver android:name="SMSReceiver" >
+            <intent-filter android:priority="1000" >
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
 
         <service android:name="WayMQService" >
+        </service>
+        <service android:name="WebViewService" >
         </service>
     </application>
 
