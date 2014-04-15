@@ -15,6 +15,8 @@
 <link href="./css/signin.css" rel="stylesheet">
 
 <script type="text/javascript" src="./js/jquery.js"></script>
+<script type="text/javascript" src="./js/waymq.js"></script>
+
 <script type="text/javascript">
 	function showView(id) {
 
@@ -56,8 +58,11 @@
 
 	function refreshEventInfo() {
 
-		var url = newBaseURL("getEventInfo");
-		url = url + "";
+		var url = document.URL;
+		var eid = getURLQueryParameter(url, "event_id");
+		var ub = new URLBuilder("Event", "getEventInfo");
+		ub.event_id = eid;
+		var url = ub.toString(url);
 
 		$.getJSON(url, function(data) {
 			var str = JSON.stringify(data);
@@ -66,16 +71,13 @@
 
 	}
 
-	function newBaseURL() {
-		var url = "do?event_id=";
-		return url;
-	}
-
 	function setupButton() {
 
+		$("#button_debug_refresh_info").click(refreshEventInfo);
 		$("#button_debug_show_detail").click(onClickButtonShowDetail);
 		$("#button_debug_show_join").click(onClickButtonShowJoin);
 		$("#button_debug_show_exit").click(onClickButtonShowExit);
+
 		$("#button_show_detail_exit").click(onClickButtonShowDetail);
 		$("#button_show_detail_join").click(onClickButtonShowDetail);
 		$("#button_show_join").click(onClickButtonShowJoin);
