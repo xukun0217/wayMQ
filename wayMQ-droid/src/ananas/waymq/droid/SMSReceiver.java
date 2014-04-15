@@ -44,7 +44,11 @@ public class SMSReceiver extends BroadcastReceiver {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		String uri = "sms://localhost/?from=" + from + "&text=" + text;
+		String uri = WebViewService.createSMSRxURI(from, text);
+		// "sms://localhost/?from="
+		// + from +
+		// "&text=" +
+		// text;
 		service.setData(Uri.parse(uri));
 		context.startService(service);
 	}

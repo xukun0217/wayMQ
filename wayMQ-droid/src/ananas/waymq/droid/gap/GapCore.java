@@ -113,4 +113,42 @@ public class GapCore {
 		String name = this.getClass().getSimpleName();
 		return this._context.getSharedPreferences(name, 0);
 	}
+
+	public News checkoutNews(long maxAge) {
+
+		SharedPreferences sp = this.getSharedPreferences();
+		long load_time = sp.getLong(GapConst.Key.news_load_time, 0);
+		long now = System.currentTimeMillis();
+		if (now - load_time < maxAge) {
+			return null;
+		}
+
+		// load
+		String url = sp.getString(GapConst.Key.news_url, null);
+		String json_old = sp.getString(GapConst.Key.news_json, null);
+		String json_new = null;
+		try {
+			if (url != null)
+				json_new = Helper.loadString(url);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if (json_new == null) {
+			return null;
+		}
+		News news = new News(json_new);
+		if (json_new.equals(json_old)) {
+			news.hasUpdated = false;
+		} else {
+			news.hasUpdated = true;
+		}
+
+		// save
+		Editor edit = sp.edit();
+		edit.putLong(GapConst.Key.news_load_time, now);
+		edit.putString(GapConst.Key.news_json, json_new);
+		edit.commit();
+
+		return news;
+	}
 }

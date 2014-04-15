@@ -1,11 +1,19 @@
 package ananas.waymq.droid;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
+import ananas.waymq.droid.gap.GapConst;
+import ananas.waymq.droid.gap.GapCore;
+import ananas.waymq.droid.gap.News;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.Uri;
 import android.os.IBinder;
 
@@ -33,15 +41,69 @@ public class WebViewService extends Service {
 				System.out.println("    from:" + from);
 				System.out.println("      to:" + to);
 				System.out.println("    text:" + text);
+				this.onRxSMS(from, to, text);
 			} else if (scheme.equals("config")) {
 				String name = "key";
 				String value = "val";
 				intent.putExtra(name, value);
 			}
 		}
-		this.showNotify("hello, world", "...");
+		// this.showNotify("hello, world", "...");
+		this.startNewsCheckoutLoop();
 
 		return super.onStartCommand(intent, flags, startId);
+	}
+
+	private void onRxSMS(String from, String to, String text) {
+		GapCore gc = new GapCore(this);
+		SharedPreferences sp = gc.getSharedPreferences();
+		Editor edit = sp.edit();
+		edit.putString(GapConst.Key.sms_from, from);
+		edit.putString(GapConst.Key.sms_to, to);
+		edit.putString(GapConst.Key.sms_text, text);
+		edit.commit();
+	}
+
+	private Runnable _newsCheckoutLoop;
+
+	private synchronized void startNewsCheckoutLoop() {
+		class Runn implements Runnable {
+
+			@Override
+			public void run() {
+				try {
+					// int sleep = 15*1000 ;
+					int sleep = 1 * 1000;
+					for (;;) {
+						Thread.sleep(sleep);
+						WebViewService.this.checkoutNews();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				WebViewService.this._newsCheckoutLoop = null;
+			}
+		}
+		if (_newsCheckoutLoop == null) {
+			Runn runn = new Runn();
+			_newsCheckoutLoop = runn;
+			(new Thread(runn)).start();
+		}
+	}
+
+	private void checkoutNews() {
+		try {
+			GapCore gc = new GapCore(this);
+			News news = gc.checkoutNews(3600 * 1000);
+			if (news != null)
+				if (news.hasUpdated) {
+					String title = news.title;
+					String text = news.text;
+					this.showNotify(title, text);
+				}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@SuppressWarnings("deprecation")
@@ -78,6 +140,24 @@ public class WebViewService extends Service {
 		// 点击状态栏的图标出现的提示信息设置
 		notification.setLatestEventInfo(this, title, text, pendingIntent);
 		manager.notify(1, notification);
+	}
+
+	public static String createSMSRxURI(String from, String text) {
+		try {
+			String charset = "UTF-8";
+			StringBuilder sb = new StringBuilder();
+			sb.append("sms://localhost/?ct=sms");
+			sb.append("&from=");
+			sb.append(URLEncoder.encode(from, charset));
+			sb.append("&to=");
+			sb.append(URLEncoder.encode("", charset));
+			sb.append("&text=");
+			sb.append(URLEncoder.encode(text, charset));
+			return sb.toString();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
