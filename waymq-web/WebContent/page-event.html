@@ -59,9 +59,9 @@
 	function refreshEventInfo() {
 
 		var url = document.URL;
-		var eid = getURLQueryParameter(url, "event_id");
+		var eid = getURLQueryParameter(url, "id");
 		var ub = new URLBuilder("Event", "getEventInfo");
-		ub.event_id = eid;
+		ub.id = eid;
 		var url = ub.toString(url);
 
 		$.getJSON(url, function(data) {

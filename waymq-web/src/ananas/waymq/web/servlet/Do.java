@@ -26,7 +26,7 @@ public class Do extends HttpServlet {
 	public Do() {
 		super();
 		ServiceAgent agent = WaymqWeb.getAgent();
-		String path = "page-event.html";
+		String path = "page-system.html";
 		this._disp = agent.getRequestDispatcher(path);
 	}
 

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>微麦可#活动终结者</title>
+
+
+<link href="./css/bootstrap.css" rel="stylesheet">
+<link href="./css/signin.css" rel="stylesheet">
+
+<script type="text/javascript" src="./js/jquery.js"></script>
+<script type="text/javascript" src="./js/waymq.js"></script>
+
+<script type="text/javascript">
+	function doCreateGroup() {
+		var name = $("#group_name").val();
+		var url = new URLBuilder("Group", "create");
+		url.name = name;
+		$.getJSON(url.toString(), function(json, status, xhr) {
+			var str = JSON.stringify(json);
+			alert(str);
+		});
+	}
+
+	function doGotoGroup() {
+		var name = $("#group_name").val();
+		var url = new URLBuilder("Group", "getIdByName");
+		url.name = name;
+		$.getJSON(url.toString(), function(json, status, xhr) {
+			var str = JSON.stringify(json);
+			alert(str);
+		});
+	}
+
+	function setupButton() {
+		$("#button_create_group").click(doCreateGroup);
+		$("#button_goto_group").click(doGotoGroup);
+	}
+
+	$(document).ready(function() {
+		setupButton();
+	});
+</script>
+
+</head>
+<body>
+
+
+
+
+
+	<div class="container">
+
+		<form class="form-signin" role="form">
+			<h2 class="form-signin-heading">查找兴趣组</h2>
+
+
+			<input id="group_name" type="text" value="waymq" class="form-control"
+				placeholder="兴趣组名称" required autofocus>
+
+			<div style="height: 50px"></div>
+
+			<!-- create group -->
+			<a id="button_create_group" class="btn btn-lg btn-primary btn-block"
+				href="#">创建兴趣组</a>
+			<!-- goto group -->
+			<a id="button_goto_group" class="btn btn-lg btn-primary btn-block"
+				href="#">goto兴趣组</a>
+
+		</form>
+
+	</div>
+	<!-- /container -->
+
+
+
+</body>
+</html>
+
