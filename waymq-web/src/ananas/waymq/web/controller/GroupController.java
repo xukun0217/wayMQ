@@ -3,6 +3,7 @@ package ananas.waymq.web.controller;
 import ananas.sf4lib.server.RequestContext;
 import ananas.sf4lib.server.jrp.JRPController;
 import ananas.sf4lib.server.store.StoreTransaction;
+import ananas.waymq.web.model.Group;
 import ananas.waymq.web.model.GroupName;
 
 public class GroupController implements JRPController {
@@ -39,10 +40,23 @@ public class GroupController implements JRPController {
 
 		String name = context.getParameter(Key.req_name);
 		StoreTransaction tran = context.openStoreTransaction();
+		// create name
 		GroupName gname = new GroupName();
-		tran.insert(gname);
+		gname.name = name;
+		gname = (GroupName) tran.insert(gname);
+		// create group
+		if (gname.group_id != null) {
+			context.setError("the group has exists: " + name);
+			return;
+		}
+		Group group = new Group();
+		group.name = gname.id;
+		group = (Group) tran.insert(group);
 
-		// TODO Auto-generated method stub
+		// finish
+		gname.group_id = group.id;
+
+		tran.commit();
 	}
 
 	private void todo(RequestContext context) {

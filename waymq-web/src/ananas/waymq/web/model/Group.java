@@ -10,15 +10,13 @@ public class Group {
 
 	// static
 
-	public String name;
+	public HashID name;
 
 	// mutable
 
 	public String title;
 	public String description;
 
-	public String password_plain;
-	public String password_sha1;
 	public HashID event_current;
 
 }
