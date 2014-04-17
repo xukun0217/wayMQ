@@ -30,8 +30,10 @@ function getURLQueryParameter(url, paramName) {
  */
 
 function URLBuilder(aClass, aMethod) {
-	this["class"] = aClass;
-	this["do"] = aMethod;
+	if (aClass != null)
+		this["class"] = aClass;
+	if (aMethod != null)
+		this["do"] = aMethod;
 	return this;
 }
 

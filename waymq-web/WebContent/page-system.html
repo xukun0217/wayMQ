@@ -34,6 +34,12 @@
 		$.getJSON(url.toString(), function(json, status, xhr) {
 			var str = JSON.stringify(json);
 			alert(str);
+			if (json.success) {
+				var url = new URLBuilder();
+				url.id = json.group_id;
+				url = url.toString("group");
+				window.location = url;
+			}
 		});
 	}
 

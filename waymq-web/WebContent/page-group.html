@@ -8,12 +8,50 @@
 <link href="./css/signin.css" rel="stylesheet">
 
 <script type="text/javascript" src="./js/jquery.js"></script>
+<script type="text/javascript" src="./js/waymq.js"></script>
 <script type="text/javascript">
 	function setupButtonHandler() {
 
 		$("#button_create_event").click(function() {
 
 			createEvent();
+
+		});
+
+	}
+
+	function loadGroupInfo() {
+
+		var id = getURLQueryParameter(document.URL, "id");
+		var url = new URLBuilder("Group", "getInfo");
+		url.id = id;
+		$.getJSON(url.toString(), function(json, status, xhr) {
+
+			//			var str = JSON.stringify(json);
+			//		alert(str);
+
+		});
+
+	}
+
+	function checkGroupExists() {
+
+		var id = getURLQueryParameter(document.URL, "id");
+		var url = new URLBuilder("Group", "exists");
+		url.id = id;
+		$.getJSON(url.toString(), function(json, status, xhr) {
+
+			//	var str = JSON.stringify(json);
+			//	alert(str);
+
+			if (json.success) {
+				if (!json.exists) {
+					// goto 404
+					window.location = "http404.html";
+				}
+			}
+
+			window.location = "http404.html";
 
 		});
 
@@ -41,6 +79,8 @@
 	$(document).ready(function() {
 
 		setupButtonHandler();
+		loadGroupInfo();
+		checkGroupExists();
 
 	});
 </script>
