@@ -11,14 +11,17 @@
         android:background="#159951" >
 
         <TextView
+            android:id="@+id/text_id"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:text="" />
+            android:gravity="center"
+            android:text="xxxxxx"
+            android:textSize="24sp" />
 
         <Button
             android:id="@+id/btn_add"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="fill_parent"
             android:text="add" />
     </LinearLayout>
@@ -36,20 +39,6 @@
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="phone" />
-
-            <EditText
-                android:id="@+id/edit_phone"
-                android:layout_width="fill_parent"
-                android:layout_height="60dp"
-                android:hint="13088889999" >
-
-                <requestFocus />
-            </EditText>
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
                 android:text="name" />
 
             <EditText
@@ -57,20 +46,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="60dp"
                 android:hint="Mike" >
-
-                <requestFocus />
-            </EditText>
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="key word" />
-
-            <EditText
-                android:id="@+id/edit_key_word"
-                android:layout_width="fill_parent"
-                android:layout_height="60dp"
-                android:hint="mk" >
 
                 <requestFocus />
             </EditText>

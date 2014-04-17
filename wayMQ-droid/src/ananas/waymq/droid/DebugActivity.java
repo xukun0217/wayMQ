@@ -13,9 +13,9 @@ public class DebugActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_debug);
 
-		// this.startActivity(new Intent(this, MemberListActivity.class));
+		this.startActivity(new Intent(this, OfflineMemberListActivity.class));
 		// this.startActivity(new Intent(this, SmsLoginActivity.class));
-		this.startActivity(new Intent(this, EventActivity.class));
+		// this.startActivity(new Intent(this, EventActivity.class));
 
 	}
 
@@ -32,7 +32,7 @@ public class DebugActivity extends Activity {
 		final int id = item.getItemId();
 		if (id == R.id.action_sign) {
 
-			this.startActivity(new Intent(this, SignActivity.class));
+			this.startActivity(new Intent(this, OfflineSignActivity.class));
 
 		} else {
 			return super.onOptionsItemSelected(item);

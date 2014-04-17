@@ -13,8 +13,8 @@ public class StartActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_start);
 
-		// startActivity(new Intent(this, DebugActivity.class));
-		startActivity(new Intent(this, WebViewActivity.class));
+		startActivity(new Intent(this, DebugActivity.class));
+		// startActivity(new Intent(this, WebViewActivity.class));
 	}
 
 	@Override

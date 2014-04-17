@@ -36,7 +36,7 @@
             android:layout_height="fill_parent"
             android:background="#00000000"
             android:padding="10dp"
-            android:text="Sign"
+            android:text="签到"
             android:textColor="#dddddd"
             android:textSize="20sp" />
     </LinearLayout>
@@ -62,53 +62,53 @@
         <LinearLayout
             android:id="@+id/box_item_head"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_height="40dp"
             android:orientation="horizontal" >
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:layout_margin="10dp"
-                android:layout_weight="0.4"
+                android:layout_weight="0.5"
                 android:gravity="center"
                 android:text="Head"
                 android:textSize="20sp" />
 
-            <NumberPicker
-                android:id="@+id/numberPicker_head_x1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.6" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/box_item_money"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:orientation="horizontal" >
-
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:layout_margin="10dp"
-                android:layout_weight="0.4"
+                android:layout_weight="0.5"
                 android:gravity="center"
                 android:text="Money"
                 android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/box_num_left"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:background="#ffffff"
+            android:orientation="horizontal" >
+
+            <NumberPicker
+                android:id="@+id/numberPicker_head_x1"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_marginRight="3dp"
+                android:layout_weight="0.5" />
 
             <NumberPicker
                 android:id="@+id/numberPicker_money_x10"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3" />
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="3dp"
+                android:layout_weight="0.25" />
 
             <NumberPicker
                 android:id="@+id/numberPicker_money_x1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3" />
+                android:layout_height="fill_parent"
+                android:layout_weight="0.25" />
         </LinearLayout>
     </LinearLayout>
 

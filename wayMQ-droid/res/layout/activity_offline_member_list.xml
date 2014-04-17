@@ -10,29 +10,25 @@
         android:layout_height="60dp"
         android:background="#159951" >
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:text="" />
-
-        <Button
-            android:id="@+id/btn_add"
+        <ImageButton
+            android:id="@+id/button_back"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:text="+" />
+            android:layout_margin="3dp"
+            android:src="@drawable/ic_launcher" />
 
+        <EditText
+            android:id="@+id/edit_search"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:layout_margin="3dp"
+            android:ems="10"
+            android:hint="number"
+            android:inputType="phone" >
+
+            <requestFocus />
+        </EditText>
     </LinearLayout>
-
-    <EditText
-        android:id="@+id/edit_search"
-        android:layout_width="fill_parent"
-        android:layout_height="60dp"
-        android:ems="10"
-        android:hint="key word" >
-
-        <requestFocus />
-    </EditText>
 
     <ListView
         android:id="@+id/list_members"
