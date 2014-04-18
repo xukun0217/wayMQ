@@ -18,6 +18,51 @@
 
 		});
 
+		$("#link_detail_show_settings").click(showSettings);
+		$("#button_settings_cancel").click(showDetail);
+		$("#button_settings_ok").click(doSettingsOk);
+
+	}
+
+	function showView(id) {
+
+		$("#view_group_detail").hide();
+		$("#view_group_settings").hide();
+		$("#view_create_event").hide();
+
+		$(id).show();
+
+	}
+
+	function showSettings() {
+		showView("#view_group_settings");
+	}
+	function showDetail() {
+		showView("#view_group_detail");
+	}
+
+	function doSettingsOk() {
+
+		var title = $("#edit_settings_title").val();
+		var description = $("#edit_settings_description").val();
+
+		var id = getURLQueryParameter(document.URL, "id");
+		var url = new URLBuilder("Group", "setInfo");
+		url["id"] = id;
+		url["title"] = title;
+		url["description"] = description;
+
+		$.getJSON(url.toString(), function(json) {
+			if (json.success) {
+				alert("设置成功!");
+				loadGroupInfo();
+				showDetail();
+			} else {
+				var str = JSON.stringify(json);
+				alert(str);
+			}
+		});
+
 	}
 
 	function loadGroupInfo() {
@@ -86,6 +131,8 @@
 		loadGroupInfo();
 		checkGroupExists();
 
+		showView("#view_group_detail");
+
 	});
 </script>
 
@@ -98,23 +145,57 @@
 	<div class="container">
 
 
-		<div id="info_title"></div>
-
-
 		<form class="form-signin" role="form">
 
 
 
 
-			<!-- info -->
-			<div id="view_group_info">
-				<div id="info_name"></div>
+			<!-- overview  info -->
+			<div id="view_group_overview">
+
+				<div>
+					<span id="info_title"></span> (<span id="info_name"></span>)
+				</div>
+
+			</div>
+
+			<!-- detail  info -->
+			<div id="view_group_detail">
+
+				<a id="link_detail_show_settings" href="#">设置</a>
+
 				<div id="info_description"></div>
 			</div>
 
 
+
 			<!-- settings -->
-			<div id="view_group_settings"></div>
+			<div id="view_group_settings">
+
+
+				<h2 class="form-signin-heading">小组设置</h2>
+
+				<!-- title -->
+				<label>兴趣组名称</label> <input id="edit_settings_title" type="text"
+					class="form-control" placeholder="兴趣组名称" value="aaa" required
+					autofocus>
+
+				<!-- description -->
+				<label> 描述 </label> <input id="edit_settings_description"
+					type="text" class="form-control" placeholder="描述" value="bbb"
+					required>
+
+
+				<!-- button -->
+				<div>
+					<a id="button_settings_cancel" href="#"
+						class="btn btn-lg btn-primary btn-block">取消</a>
+				</div>
+				<div>
+					<a id="button_settings_ok" href="#"
+						class="btn btn-lg btn-primary btn-block">确定</a>
+				</div>
+			</div>
 
 
 			<!-- new event -->

@@ -14,6 +14,8 @@ public class GroupController implements JRPController {
 	interface Key {
 
 		String req_name = "name";
+		String req_title = "title";
+		String req_description = "description";
 
 		String res_group_id = "group_id";
 		String res_name = "name";
@@ -36,6 +38,9 @@ public class GroupController implements JRPController {
 		} else if (do_.equals("getIdByName")) {
 			this.getIdByName(context);
 
+		} else if (do_.equals("setInfo")) {
+			this.setInfo(context);
+
 		} else if (do_.equals("getInfo")) {
 			this.getInfo(context);
 
@@ -50,6 +55,25 @@ public class GroupController implements JRPController {
 		}
 	}
 
+	private void setInfo(RequestContext context) {
+
+		String id = context.getRequestThis();
+		StoreTransaction tran = context.openStoreTransaction();
+		Group group = (Group) tran.get(Group.class, id);
+		if (group == null) {
+			context.setError("no this group: " + id);
+			return;
+		}
+
+		group.m_title = context.getParameter(Key.req_title, group.m_title);
+		group.m_description = context.getParameter(Key.req_description,
+				group.m_description);
+
+		tran.update(group);
+		tran.commit();
+
+	}
+
 	private void getInfo(RequestContext context) {
 		String id = context.getRequestThis();
 		StoreTransaction tran = context.openStoreTransaction();
@@ -58,15 +82,15 @@ public class GroupController implements JRPController {
 			context.setError("no this group: " + id);
 			return;
 		}
-		GroupName gname = (GroupName) tran.get(GroupName.class, group.name);
+		GroupName gname = (GroupName) tran.get(GroupName.class, group.s_name);
 		if (gname == null) {
 			context.setError("no this group: " + id);
 			return;
 		}
 		JSONObject res = context.getResultJSON();
 		res.put(Key.res_group_id, Helper.idToString(group.id));
-		res.put(Key.res_title, group.title);
-		res.put(Key.res_description, group.description);
+		res.put(Key.res_title, group.m_title);
+		res.put(Key.res_description, group.m_description);
 		res.put(Key.res_name, gname.name);
 	}
 
@@ -100,7 +124,7 @@ public class GroupController implements JRPController {
 			return;
 		}
 		Group group = new Group();
-		group.name = gname.id;
+		group.s_name = gname.id;
 		group = (Group) tran.insert(group);
 
 		// finish

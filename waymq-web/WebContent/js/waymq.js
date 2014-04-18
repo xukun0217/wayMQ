@@ -56,6 +56,9 @@ URLBuilder.prototype.toString = function(base) {
 	for ( var key in this) {
 		if (this.hasOwnProperty(key)) {
 			var val = this[key];
+
+			val = encodeURIComponent(val);
+
 			var sp = (sb.length > 0) ? "&" : "";
 			sb = sb + sp + key + "=" + val;
 		}

@@ -8,6 +8,17 @@ import com.alibaba.fastjson.JSONObject;
 
 public class GroupHODAO extends AbstractDao4HOJson<Group> {
 
+	interface Key {
+
+		// static
+		String group_name = "group_name";
+
+		// mutable
+		String description = "description";
+		String title = "title";
+		String current_event = "current_event";
+	}
+
 	public GroupHODAO() {
 		super(new MyDeletate());
 	}
@@ -27,32 +38,61 @@ public class GroupHODAO extends AbstractDao4HOJson<Group> {
 		@Override
 		public JSONObject getStatic(Group obj) {
 			JSONObject json = new JSONObject();
-			// TODO Auto-generated method stub
+			json.put(Key.group_name, Helper.idToString(obj.s_name));
 			return json;
 		}
 
 		@Override
 		public JSONObject getMutable(Group obj) {
 			JSONObject json = new JSONObject();
-			// TODO Auto-generated method stub
+			json.put(Key.description, obj.m_description);
+			json.put(Key.title, obj.m_title);
+			json.put(Key.current_event, Helper.idToString(obj.m_event_current));
 			return json;
 		}
 
 		@Override
 		public void setModel(Group obj, HashID id, JSONObject static_,
 				JSONObject mutable) {
-			// TODO Auto-generated method stub
 
 			obj.id = id;
-
+			obj.s_name = Helper.getId(static_, Key.group_name);
+			obj.m_description = Helper.getString(mutable, Key.description);
+			obj.m_title = Helper.getString(mutable, Key.title);
+			obj.m_event_current = Helper.getId(mutable, Key.current_event);
 		}
 
 		@Override
 		public void setModel(Group obj, HashID id) {
-			// TODO Auto-generated method stub
 			obj.id = id;
-
 		}
+	}
+
+	static class Helper {
+
+		public static HashID getId(JSONObject json, String key) {
+			if (json == null)
+				return null;
+			String val = json.getString(key);
+			if (val == null)
+				return null;
+			if (val.length() < 1)
+				return null;
+			return HashID.Factory.create(val);
+		}
+
+		public static String idToString(HashID id) {
+			if (id == null)
+				return null;
+			return id.toString();
+		}
+
+		public static String getString(JSONObject json, String key) {
+			if (json == null)
+				return null;
+			return json.getString(key);
+		}
+
 	}
 
 }
