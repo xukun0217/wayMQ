@@ -16,6 +16,9 @@ public class GroupController implements JRPController {
 		String req_name = "name";
 
 		String res_group_id = "group_id";
+		String res_name = "name";
+		String res_title = "title";
+		String res_description = "description";
 
 	}
 
@@ -33,6 +36,9 @@ public class GroupController implements JRPController {
 		} else if (do_.equals("getIdByName")) {
 			this.getIdByName(context);
 
+		} else if (do_.equals("getInfo")) {
+			this.getInfo(context);
+
 		} else if (do_.equals("todo")) {
 			this.todo(context);
 
@@ -42,6 +48,26 @@ public class GroupController implements JRPController {
 		if (unsupported) {
 			context.setError("unsupported method : " + do_);
 		}
+	}
+
+	private void getInfo(RequestContext context) {
+		String id = context.getRequestThis();
+		StoreTransaction tran = context.openStoreTransaction();
+		Group group = (Group) tran.get(Group.class, id);
+		if (group == null) {
+			context.setError("no this group: " + id);
+			return;
+		}
+		GroupName gname = (GroupName) tran.get(GroupName.class, group.name);
+		if (gname == null) {
+			context.setError("no this group: " + id);
+			return;
+		}
+		JSONObject res = context.getResultJSON();
+		res.put(Key.res_group_id, Helper.idToString(group.id));
+		res.put(Key.res_title, group.title);
+		res.put(Key.res_description, group.description);
+		res.put(Key.res_name, gname.name);
 	}
 
 	private void getIdByName(RequestContext context) {
@@ -93,8 +119,6 @@ public class GroupController implements JRPController {
 	}
 
 	private void todo(RequestContext context) {
-		// TODO Auto-generated method stub
 
 	}
-
 }

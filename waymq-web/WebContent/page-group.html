@@ -30,6 +30,10 @@
 			//			var str = JSON.stringify(json);
 			//		alert(str);
 
+			$("#info_name").text(json.name);
+			$("#info_title").text(json.title);
+			$("#info_description").text(json.description);
+
 		});
 
 	}
@@ -51,7 +55,7 @@
 				}
 			}
 
-			window.location = "http404.html";
+			//		window.location = "http404.html";
 
 		});
 
@@ -90,41 +94,53 @@
 
 	<div>微麦可#活动终结者::group</div>
 
-	<div id="view_create_event">
 
-		<!-- new event -->
+	<div class="container">
+
+
+		<div id="info_title"></div>
+
+
 		<form class="form-signin" role="form">
 
 
-			<h2 class="form-signin-heading">创建活动</h2>
-
-			<!-- title -->
-			<input id="edit_title" type="text" class="form-control"
-				placeholder="标题" value="aaa" required autofocus>
-			<!-- time -->
-			<input id="edit_time" type="text" class="form-control"
-				placeholder="时间" value="bbb" required>
-			<!-- content -->
-			<input id="edit_content" type="text" class="form-control"
-				placeholder="内容" value="ccc" required> <br /> <br />
-
-			<!-- button -->
-			<a id="button_create_event" href="#"
-				class="btn btn-lg btn-primary btn-block">创建</a>
 
 
+			<!-- info -->
+			<div id="view_group_info">
+				<div id="info_name"></div>
+				<div id="info_description"></div>
+			</div>
+
+
+			<!-- settings -->
+			<div id="view_group_settings"></div>
+
+
+			<!-- new event -->
+			<div id="view_create_event">
+
+				<h2 class="form-signin-heading">创建活动</h2>
+
+				<!-- title -->
+				<input id="edit_title" type="text" class="form-control"
+					placeholder="标题" value="aaa" required autofocus>
+				<!-- time -->
+				<input id="edit_time" type="text" class="form-control"
+					placeholder="时间" value="bbb" required>
+				<!-- content -->
+				<input id="edit_content" type="text" class="form-control"
+					placeholder="内容" value="ccc" required> <br /> <br />
+
+				<!-- button -->
+				<a id="button_create_event" href="#"
+					class="btn btn-lg btn-primary btn-block">创建</a>
+
+			</div>
 		</form>
 
 	</div>
 
-	<div id="view_list_event">
-
-		<!-- list event -->
-
-
-
-
-	</div>
 
 
 </body>
