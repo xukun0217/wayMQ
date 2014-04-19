@@ -16,6 +16,16 @@
 <script type="text/javascript" src="./js/jquery.js"></script>
 <script type="text/javascript" src="./js/waymq.js"></script>
 <script type="text/javascript">
+	var global = new Object();
+	global.current_event_id = null;
+
+	function showJsonIfNotSuccess(json) {
+		if (json.success)
+			return;
+		var str = JSON.stringify(json);
+		alert(str);
+	}
+
 	function setupButtonHandler() {
 
 		$("#button_create_event").click(function() {
@@ -27,7 +37,7 @@
 		$("#link_detail_show_home").click(showDetail);
 		$("#link_detail_show_settings").click(showSettings);
 		$("#link_detail_show_new_event").click(showCreateEvent);
-		//	$("#button_settings_cancel").click(showDetail);
+		$("#link_current_event_detail").click(gotoCurrentEvent);
 		$("#button_settings_ok").click(doSettingsOk);
 
 	}
@@ -52,6 +62,17 @@
 		showView("#view_create_event");
 	}
 
+	function gotoCurrentEvent() {
+
+		var eid = global.current_event_id;
+		if (eid == null)
+			return;
+
+		var url = "event?id=" + eid;
+		window.location = url;
+
+	}
+
 	function doSettingsOk() {
 
 		var title = $("#edit_settings_title").val();
@@ -64,14 +85,32 @@
 		url["description"] = description;
 
 		$.getJSON(url.toString(), function(json) {
+			showJsonIfNotSuccess(json);
 			if (json.success) {
 				alert("设置成功!");
 				loadGroupInfo();
 				showDetail();
-			} else {
-				var str = JSON.stringify(json);
-				alert(str);
 			}
+		});
+
+	}
+
+	function loadCurrentEventInfo(id) {
+
+		var url = new URLBuilder("Event", "getInfo");
+		url.id = id;
+
+		$.getJSON(url.toString(), function(json, status, xhr) {
+			showJsonIfNotSuccess(json);
+
+			var open_time = new DateTime();
+			open_time.gmt = json.time_open;
+
+			$("#current_event_time").text(open_time.toString());
+			$("#current_event_title").text(json.title);
+
+			global.current_event_id = json.event_id;
+
 		});
 
 	}
@@ -83,8 +122,7 @@
 		url.id = id;
 		$.getJSON(url.toString(), function(json, status, xhr) {
 
-			//			var str = JSON.stringify(json);
-			//		alert(str);
+			showJsonIfNotSuccess(json);
 
 			$("#info_name").text(json.name);
 			$("#info_title").text(json.title);
@@ -92,6 +130,8 @@
 
 			$("#edit_settings_title").val(json.title);
 			$("#edit_settings_description").val(json.description);
+
+			loadCurrentEventInfo(json.current_event);
 
 		});
 
@@ -103,19 +143,13 @@
 		var url = new URLBuilder("Group", "exists");
 		url.id = id;
 		$.getJSON(url.toString(), function(json, status, xhr) {
-
-			//	var str = JSON.stringify(json);
-			//	alert(str);
-
+			showJsonIfNotSuccess(json);
 			if (json.success) {
 				if (!json.exists) {
 					// goto 404
 					window.location = "http404.html";
 				}
 			}
-
-			//		window.location = "http404.html";
-
 		});
 
 	}
@@ -130,11 +164,14 @@
 		var url = new URLBuilder("WAYMQ", "newEvent");
 		url["group"] = group;
 		url["title"] = title;
-		url["time_open"] = time;
+		url["time_open"] = 0; //  time;
 		url["content"] = content;
 		$.getJSON(url.toString("do"), function(data) {
-			var str = JSON.stringify(data);
-			alert(str);
+
+			showJsonIfNotSuccess(json);
+
+			// reload info
+			loadGroupInfo();
 		});
 
 	}
@@ -183,7 +220,13 @@
 
 				<h2 class="form-signin-heading">最新活动</h2>
 				<div>
-					<a href="#">(event)</a>
+					<div id="current_event_title"></div>
+					<div>
+						<span>开始时间：</span> <span id="current_event_time"></span>
+					</div>
+					<div>
+						<a id="link_current_event_detail" href="#">(详情)</a>
+					</div>
 				</div>
 
 				<h2 class="form-signin-heading">兴趣组简介</h2>
@@ -249,12 +292,7 @@
 
 		</form>
 
-
-
-
 	</div>
-
-
 
 </body>
 </html>

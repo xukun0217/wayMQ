@@ -22,13 +22,13 @@
 
 	function do_refresh() {
 
-		if (now == null) {
-			now = new DateTime();
-		}
+		//		if (now == null) {
+		now = new DateTime();
+		//	}
 
 		var str = now.toString();
 
-		$("#output").val(str);
+		$("#output").text(str);
 
 	}
 
@@ -41,6 +41,14 @@
 
 </head>
 <body>
+
+	<div>
+		<h2>HTTP 404 Not Found</h2>
+	</div>
+
+	<div>
+		<a href="./">go home </a>
+	</div>
 
 	<div>
 		<div>

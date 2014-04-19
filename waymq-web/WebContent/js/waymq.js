@@ -90,7 +90,7 @@ DateTime.prototype.toDateString = function() {
 	var date = new Date();
 	date.setTime(t);
 	var y = date.getUTCFullYear();
-	var m = date.getUTCMonth();
+	var m = date.getUTCMonth() + 1;
 	var d = date.getUTCDate();
 	return y + "-" + m + "-" + d;
 };
@@ -98,9 +98,9 @@ DateTime.prototype.toDateString = function() {
 DateTime.prototype.toTimeInDayString = function() {
 	var time = this.gmt;
 	var t = time + this.zone_adjust;
-	var h = (t / (3600 * 1000)) % 24;
-	var m = (t / (60 * 1000)) % 60;
-	var s = (t / 1000) % 60;
+	var h = Math.floor(t / (3600 * 1000)) % 24;
+	var m = Math.floor(t / (60 * 1000)) % 60;
+	var s = Math.floor(t / 1000) % 60;
 	return (h + ":" + m + ":" + s);
 };
 

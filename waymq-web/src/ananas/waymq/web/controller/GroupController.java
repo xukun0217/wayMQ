@@ -18,6 +18,7 @@ public class GroupController implements JRPController {
 		String req_description = "description";
 
 		String res_group_id = "group_id";
+		String res_current_event = "current_event";
 		String res_name = "name";
 		String res_title = "title";
 		String res_description = "description";
@@ -41,6 +42,9 @@ public class GroupController implements JRPController {
 		} else if (do_.equals("getInfo")) {
 			this.getInfo(context);
 
+		} else if (do_.equals("exists")) {
+			this.exists(context);
+
 		} else if (do_.equals("todo")) {
 			this.todo(context);
 
@@ -50,6 +54,16 @@ public class GroupController implements JRPController {
 		if (unsupported) {
 			context.setError("unsupported method : " + do_);
 		}
+	}
+
+	private void exists(RequestContext context) {
+
+		String gid = context.getRequestThis();
+		StoreTransaction tran = context.openStoreTransaction();
+		Group group = (Group) tran.get(Group.class, gid);
+		JSONObject json = context.getResultJSON();
+		json.put("exists", (group != null));
+
 	}
 
 	private void setInfo(RequestContext context) {
@@ -89,6 +103,9 @@ public class GroupController implements JRPController {
 		res.put(Key.res_title, group.m_title);
 		res.put(Key.res_description, group.m_description);
 		res.put(Key.res_name, gname.name);
+
+		res.put(Key.res_current_event, Helper.idToString(group.m_event_current));
+
 	}
 
 	private void getIdByName(RequestContext context) {
