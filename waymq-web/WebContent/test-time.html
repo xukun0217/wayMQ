@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>微麦可#活动终结者</title>
+
+
+<link href="./css/bootstrap.css" rel="stylesheet">
+<link href="./css/signin.css" rel="stylesheet">
+
+<script type="text/javascript" src="./js/jquery.js"></script>
+<script type="text/javascript" src="./js/waymq.js"></script>
+
+<script type="text/javascript">
+	var now = null;
+
+	function do_refresh() {
+
+		if (now == null) {
+			now = new DateTime();
+		}
+
+		var str = now.toString();
+
+		$("#output").val(str);
+
+	}
+
+	$(document).ready(function() {
+
+		$("#btn_refresh").click(do_refresh);
+
+	});
+</script>
+
+</head>
+<body>
+
+	<div>
+		<div>
+			<a href="#" id="btn_refresh">refresh</a>
+		</div>
+		<div id="output"></div>
+	</div>
+</body>
+</html>
+

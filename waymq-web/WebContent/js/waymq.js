@@ -65,3 +65,46 @@ URLBuilder.prototype.toString = function(base) {
 	}
 	return base + "?" + sb;
 };
+
+/*******************************************************************************
+ * DateTime
+ */
+
+function DateTime() {
+	this.zone = 8;
+	this.zone_adjust = this.zone * (1000 * 3600);
+	var date = new Date();
+	this.gmt = date.getTime();
+	return this;
+}
+
+DateTime.prototype.toString = function() {
+	var s1 = this.toDateString();
+	var s2 = this.toTimeInDayString();
+	return s1 + " " + s2;
+};
+
+DateTime.prototype.toDateString = function() {
+	var time = this.gmt;
+	var t = time + this.zone_adjust;
+	var date = new Date();
+	date.setTime(t);
+	var y = date.getUTCFullYear();
+	var m = date.getUTCMonth();
+	var d = date.getUTCDate();
+	return y + "-" + m + "-" + d;
+};
+
+DateTime.prototype.toTimeInDayString = function() {
+	var time = this.gmt;
+	var t = time + this.zone_adjust;
+	var h = (t / (3600 * 1000)) % 24;
+	var m = (t / (60 * 1000)) % 60;
+	var s = (t / 1000) % 60;
+	return (h + ":" + m + ":" + s);
+};
+
+/*******************************************************************************
+ * EOF
+ */
+

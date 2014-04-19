@@ -32,9 +32,6 @@ public class GroupController implements JRPController {
 			do_ = "null";
 			unsupported = true;
 
-		} else if (do_.equals("create")) {
-			this.create(context);
-
 		} else if (do_.equals("getIdByName")) {
 			this.getIdByName(context);
 
@@ -108,29 +105,6 @@ public class GroupController implements JRPController {
 		// get group
 		JSONObject json = context.getResultJSON();
 		json.put(Key.res_group_id, Helper.idToString(gname.group_id));
-	}
-
-	private void create(RequestContext context) {
-
-		String name = context.getParameter(Key.req_name);
-		StoreTransaction tran = context.openStoreTransaction();
-		// create name
-		GroupName gname = new GroupName();
-		gname.name = name;
-		gname = (GroupName) tran.insert(gname);
-		// create group
-		if (gname.group_id != null) {
-			context.setError("the group has exists: " + name);
-			return;
-		}
-		Group group = new Group();
-		group.s_name = gname.id;
-		group = (Group) tran.insert(group);
-
-		// finish
-		gname.group_id = group.id;
-
-		tran.commit();
 	}
 
 	static class Helper {

@@ -10,15 +10,15 @@ public class Event {
 
 	// static
 
-	public HashID prev_event;
-	public HashID owner_group;
+	public HashID s_prev_event;
+	public HashID s_owner_group;
 
 	// mutable
 
-	public String title;
-	public String content;
-	public long time_create;
-	public long time_open;
-	public long time_close;
+	public String m_title;
+	public String m_content;
+	public long m_time_create;
+	public long m_time_open;
+	public long m_time_close;
 
 }

@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+
 <title>微麦可#活动终结者</title>
 
 <link href="./css/bootstrap.css" rel="stylesheet">
@@ -18,8 +24,10 @@
 
 		});
 
+		$("#link_detail_show_home").click(showDetail);
 		$("#link_detail_show_settings").click(showSettings);
-		$("#button_settings_cancel").click(showDetail);
+		$("#link_detail_show_new_event").click(showCreateEvent);
+		//	$("#button_settings_cancel").click(showDetail);
 		$("#button_settings_ok").click(doSettingsOk);
 
 	}
@@ -39,6 +47,9 @@
 	}
 	function showDetail() {
 		showView("#view_group_detail");
+	}
+	function showCreateEvent() {
+		showView("#view_create_event");
 	}
 
 	function doSettingsOk() {
@@ -79,6 +90,9 @@
 			$("#info_title").text(json.title);
 			$("#info_description").text(json.description);
 
+			$("#edit_settings_title").val(json.title);
+			$("#edit_settings_description").val(json.description);
+
 		});
 
 	}
@@ -108,17 +122,17 @@
 
 	function createEvent() {
 
+		var group = getURLQueryParameter(document.URL, "id");
 		var title = $("#edit_title").val();
 		var time = $("#edit_time").val();
 		var content = $("#edit_content").val();
 
-		var url = "do?class=WAYMQ";
-		url = url + "&do=" + "newEvent";
-		url = url + "&title=" + title;
-		url = url + "&time=" + time;
-		url = url + "&content=" + content;
-
-		$.getJSON(url, function(data) {
+		var url = new URLBuilder("WAYMQ", "newEvent");
+		url["group"] = group;
+		url["title"] = title;
+		url["time_open"] = time;
+		url["content"] = content;
+		$.getJSON(url.toString("do"), function(data) {
 			var str = JSON.stringify(data);
 			alert(str);
 		});
@@ -139,7 +153,6 @@
 </head>
 <body>
 
-	<div>微麦可#活动终结者::group</div>
 
 
 	<div class="container">
@@ -148,23 +161,34 @@
 		<form class="form-signin" role="form">
 
 
-
-
-			<!-- overview  info -->
-			<div id="view_group_overview">
-
+			<!-- head (overview  info) -->
+			<div id="view_group_overview" class="head">
 				<div>
-					<span id="info_title"></span> (<span id="info_name"></span>)
+					<h2>
+						<a id="link_detail_show_home" href="#"> <span id="info_title"></span></a>
+					</h2>
+					(<span id="info_name"></span>)
 				</div>
-
 			</div>
+
 
 			<!-- detail  info -->
 			<div id="view_group_detail">
 
-				<a id="link_detail_show_settings" href="#">设置</a>
+				<!-- link to settings -->
+				<a id="link_detail_show_settings" href="#">设置</a>|
+				<!-- link to settings -->
+				<a id="link_detail_show_new_event" href="#">新建活动</a>
 
+
+				<h2 class="form-signin-heading">最新活动</h2>
+				<div>
+					<a href="#">(event)</a>
+				</div>
+
+				<h2 class="form-signin-heading">兴趣组简介</h2>
 				<div id="info_description"></div>
+
 			</div>
 
 
@@ -187,11 +211,7 @@
 
 
 				<!-- button -->
-				<div>
-					<a id="button_settings_cancel" href="#"
-						class="btn btn-lg btn-primary btn-block">取消</a>
-				</div>
-				<div>
+				<div style="margin-top: 30px">
 					<a id="button_settings_ok" href="#"
 						class="btn btn-lg btn-primary btn-block">确定</a>
 				</div>
@@ -205,20 +225,32 @@
 
 				<!-- title -->
 				<input id="edit_title" type="text" class="form-control"
-					placeholder="标题" value="aaa" required autofocus>
+					placeholder="标题" value="搞球" required autofocus>
 				<!-- time -->
 				<input id="edit_time" type="text" class="form-control"
-					placeholder="时间" value="bbb" required>
+					placeholder="时间" value="2014-04-19" required>
 				<!-- content -->
 				<input id="edit_content" type="text" class="form-control"
-					placeholder="内容" value="ccc" required> <br /> <br />
+					placeholder="内容" value="快乐小狼，老地方，开搞！let's go!" required> <br />
+				<br />
 
 				<!-- button -->
 				<a id="button_create_event" href="#"
 					class="btn btn-lg btn-primary btn-block">创建</a>
 
 			</div>
+
+
+			<div class="foot">
+				<div style="margin-top: 20px; height: 5px; background: #33aa33"></div>
+				<div>微麦可#活动终结者</div>
+				<div>(C)2014 puyatech.com</div>
+			</div>
+
 		</form>
+
+
+
 
 	</div>
 

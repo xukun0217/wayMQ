@@ -53,8 +53,8 @@ public class EventController implements JRPController {
 		}
 
 		JSONObject json = context.getResultJSON();
-		json.put(Key.res_title, event.title);
-		json.put(Key.res_detail, event.content);
+		json.put(Key.res_title, event.m_title);
+		json.put(Key.res_detail, event.m_content);
 
 	}
 

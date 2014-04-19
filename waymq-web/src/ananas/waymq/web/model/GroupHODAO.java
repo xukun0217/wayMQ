@@ -56,10 +56,14 @@ public class GroupHODAO extends AbstractDao4HOJson<Group> {
 				JSONObject mutable) {
 
 			obj.id = id;
-			obj.s_name = Helper.getId(static_, Key.group_name);
-			obj.m_description = Helper.getString(mutable, Key.description);
-			obj.m_title = Helper.getString(mutable, Key.title);
-			obj.m_event_current = Helper.getId(mutable, Key.current_event);
+			if (static_ != null) {
+				obj.s_name = Helper.getId(static_, Key.group_name);
+			}
+			if (mutable != null) {
+				obj.m_description = mutable.getString(Key.description);
+				obj.m_title = mutable.getString(Key.title);
+				obj.m_event_current = Helper.getId(mutable, Key.current_event);
+			}
 		}
 
 		@Override
@@ -85,12 +89,6 @@ public class GroupHODAO extends AbstractDao4HOJson<Group> {
 			if (id == null)
 				return null;
 			return id.toString();
-		}
-
-		public static String getString(JSONObject json, String key) {
-			if (json == null)
-				return null;
-			return json.getString(key);
 		}
 
 	}
