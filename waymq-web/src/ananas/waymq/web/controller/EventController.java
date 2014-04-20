@@ -13,6 +13,7 @@ public class EventController implements JRPController {
 	interface Key {
 
 		String res_event_id = "event_id";
+		String res_owner_group = "owner_group";
 		String res_title = "title";
 		String res_detail = "detail";
 		String res_time_open = "time_open";
@@ -32,6 +33,9 @@ public class EventController implements JRPController {
 		} else if (do_.equals("getInfo")) {
 			this.getInfo(context);
 
+		} else if (do_.equals("join")) {
+			this.join(context);
+
 		} else if (do_.equals("todo")) {
 			this.todo(context);
 
@@ -41,6 +45,20 @@ public class EventController implements JRPController {
 		if (unsupported) {
 			context.setError("unsupported method : " + do_);
 		}
+	}
+
+	private void join(RequestContext context) {
+
+		String eid = context.getRequestThis();
+
+		StoreTransaction tran = context.openStoreTransaction();
+
+		Event event = (Event) tran.get(Event.class, eid);
+		if (event == null) {
+			context.setError("cannot find the event: " + eid);
+			return;
+		}
+
 	}
 
 	private void getInfo(RequestContext context) {
@@ -55,6 +73,7 @@ public class EventController implements JRPController {
 
 		JSONObject json = context.getResultJSON();
 		json.put(Key.res_event_id, Helper.idToString(event.id));
+		json.put(Key.res_owner_group, Helper.idToString(event.s_owner_group));
 		json.put(Key.res_title, event.m_title);
 		json.put(Key.res_detail, event.m_content);
 		json.put(Key.res_time_close, event.m_time_close);

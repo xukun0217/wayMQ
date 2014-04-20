@@ -15,10 +15,18 @@ public class Event {
 
 	// mutable
 
+	public HashID m_join_list;
 	public String m_title;
 	public String m_content;
 	public long m_time_create;
 	public long m_time_open;
 	public long m_time_close;
+
+	// access
+
+	public final Access access = new Access();
+
+	public class Access {
+	}
 
 }

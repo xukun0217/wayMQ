@@ -18,6 +18,16 @@
 <script type="text/javascript" src="./js/waymq.js"></script>
 
 <script type="text/javascript">
+	var god = new Object();
+	god.owner_group_id = null;
+
+	function showJsonIfNotSuccess(json) {
+		if (json.success)
+			return;
+		var str = JSON.stringify(json);
+		alert(str);
+	}
+
 	function showView(id) {
 
 		$("#view_debug").hide();
@@ -41,12 +51,41 @@
 
 	function doJoinEvent() {
 
+		var eid = getURLQueryParameter(document.URL, "id");
+
 		var phone = $("#edit_join_event_phone").val();
 		var nickname = $("#edit_join_event_nickname").val();
 		var count = $("#edit_join_event_count").val();
 
-		alert("join\nphone:" + phone + "\nname:" + nickname + "\ncount:"
-				+ count);
+		if (phone == null) {
+			alert("请输入有效的手机号！");
+			return;
+		}
+		if (count < 1) {
+			alert("请输入有效的人数！");
+			return;
+		}
+		if (nickname == null) {
+			alert("请输入有效的昵称！");
+			return;
+		}
+
+		alert("报名信息\n\n电话:" + phone + "\n昵称:" + nickname + "\n人数:" + count);
+
+		var url = new URLBuilder("Event", "join");
+		url.phone = phone;
+		url.nickname = nickname;
+		url.count = count;
+		url.id = eid;
+		$.getJSON(url.toString(), function(json) {
+			showJsonIfNotSuccess(json);
+			if (json.success) {
+				alert("热烈祝贺" + nickname + "报名成功！");
+				refreshEventInfo();
+				onClickButtonShowDetail();
+			}
+		});
+
 	}
 	function doExitEvent() {
 
@@ -56,18 +95,46 @@
 
 	}
 
+	function refreshGroupInfo(id) {
+		god.owner_group_id = id;
+		var url = new URLBuilder("Group", "getInfo");
+		url.id = id;
+		$.getJSON(url.toString(), function(json) {
+			showJsonIfNotSuccess(json);
+
+			$("#text_overview_group").text(json.title);
+
+		});
+	}
+
 	function refreshEventInfo() {
 
 		var url = document.URL;
 		var eid = getURLQueryParameter(url, "id");
-		var ub = new URLBuilder("Event", "getEventInfo");
+		var ub = new URLBuilder("Event", "getInfo");
 		ub.id = eid;
 		var url = ub.toString(url);
 
 		$.getJSON(url, function(data) {
-			var str = JSON.stringify(data);
-			alert(str);
+			showJsonIfNotSuccess(data);
+
+			var time_open = new DateTime();
+			time_open.gmt = data.time_open;
+
+			$("#text_overview_open_time").text(time_open.toString());
+			$("#text_overview_event_title").text(data.title);
+			$("#text_event_content_detail").text(data.detail);
+
+			refreshGroupInfo(data.owner_group);
 		});
+
+	}
+
+	function gotoGroup() {
+
+		var url = "group?id=" + god.owner_group_id;
+
+		window.location = url;
 
 	}
 
@@ -78,10 +145,10 @@
 		$("#button_debug_show_join").click(onClickButtonShowJoin);
 		$("#button_debug_show_exit").click(onClickButtonShowExit);
 
-		$("#button_show_detail_exit").click(onClickButtonShowDetail);
-		$("#button_show_detail_join").click(onClickButtonShowDetail);
-		$("#button_show_join").click(onClickButtonShowJoin);
-		$("#button_show_exit").click(onClickButtonShowExit);
+		$("#link_goto_group").click(gotoGroup);
+		$("#link_show_view_detail").click(onClickButtonShowDetail);
+		$("#button_show_view_join").click(onClickButtonShowJoin);
+		$("#button_show_view_exit").click(onClickButtonShowExit);
 
 		$("#button_join_event").click(doJoinEvent);
 		$("#button_exit_event").click(doExitEvent);
@@ -89,7 +156,9 @@
 
 	$(document).ready(function() {
 
+		showView("#view_event_detail");
 		setupButton();
+		refreshEventInfo();
 
 	});
 </script>
@@ -126,17 +195,43 @@
 			</div>
 
 
-			<div id="view_event_overview">
-				<div>我爱羽毛球</div>
-				<div>2014-04-14</div>
-				<div>搞球</div>
+			<div id="view_head">
+				<div>
+					<span>兴趣组：</span> <a id="link_goto_group" href="#"> <span
+						id="text_overview_group">(group)</span>
+					</a>
+				</div>
+				<div>
+
+					<span>开始时间：</span><span id="text_overview_open_time">(open-time)</span>
+
+				</div>
+				<div>
+					<span>活动主题：</span> <span id="text_overview_event_title">(event-title)</span>
+					(<a id="link_show_view_detail" href="#">详情...</a>)
+				</div>
 			</div>
 
 			<div id="view_event_detail">
-				<h2 class="form-signin-heading">
-					活动详情( <a id="button_show_join" href="#">报名</a>/<a
-						id="button_show_exit" href="#">取消</a> )
-				</h2>
+
+				<div style="margin-top: 20px; margin-bottom: 20px">
+					<a id="button_show_view_join" href="#" style="font-size: 30px">猛戳报名！</a>
+					<span>或</span> <a id="button_show_view_exit" href="#">取消报名</a>
+				</div>
+
+				<h2 class="form-signin-heading">活动详情</h2>
+
+				<div id="text_event_content_detail"></div>
+
+				<h2 class="form-signin-heading">报名名单</h2>
+
+				<ol id="list_join_event">
+
+					<li>first</li>
+					<li>second</li>
+					<li>third</li>
+					<li>fouth</li>
+				</ol>
 
 			</div>
 
@@ -146,18 +241,18 @@
 				<!-- join event -->
 
 
-				<h2 class="form-signin-heading">
-					参加活动(<a id="button_show_detail_join" href="#">详情</a>)
-				</h2>
+				<h2 class="form-signin-heading">参加活动</h2>
 
 				<!-- title -->
-				<input id="edit_join_event_phone" type="text" class="form-control"
-					placeholder="手机号" value="13012345678" required autofocus>
+				<label>手机号</label> <input id="edit_join_event_phone" type="text"
+					class="form-control" placeholder="手机号" value="13012345678" required
+					autofocus>
 				<!-- time -->
-				<input id="edit_join_event_nickname" type="text"
+				<label>昵称</label> <input id="edit_join_event_nickname" type="text"
 					class="form-control" placeholder="昵称" value="迈克" required>
-				<input id="edit_join_event_count" type="text" class="form-control"
-					placeholder="人数" value="1" required>
+				<!-- count -->
+				<label>人数</label> <input id="edit_join_event_count" type="text"
+					class="form-control" placeholder="人数" value="1" required>
 
 				<div style="height: 50px"></div>
 
@@ -175,13 +270,12 @@
 				<!-- exit event -->
 
 
-				<h2 class="form-signin-heading">
-					退出活动(<a id="button_show_detail_exit" href="#">详情</a>)
-				</h2>
+				<h2 class="form-signin-heading">退出活动</h2>
 
 				<!-- phone -->
-				<input id="edit_exit_event_phone" type="text" class="form-control"
-					placeholder="手机号" value="13012345678" required autofocus>
+				<label>手机号</label> <input id="edit_exit_event_phone" type="text"
+					class="form-control" placeholder="手机号" value="13012345678" required
+					autofocus>
 
 				<div style="height: 50px"></div>
 
@@ -192,6 +286,13 @@
 
 
 			</div>
+
+			<div id="view_foot">
+				<div style="margin-top: 20px; height: 5px; background: #33aa33"></div>
+				<div>微麦可#活动终结者</div>
+				<div>(C)2014 puyatech.com</div>
+			</div>
+
 		</form>
 	</div>
 

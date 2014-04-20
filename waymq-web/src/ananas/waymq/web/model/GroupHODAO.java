@@ -23,7 +23,7 @@ public class GroupHODAO extends AbstractDao4HOJson<Group> {
 		super(new MyDeletate());
 	}
 
-	static class MyDeletate implements Dao4HOJson<Group> {
+	private static class MyDeletate implements Dao4HOJson<Group> {
 
 		@Override
 		public Class<Group> modelClass() {
