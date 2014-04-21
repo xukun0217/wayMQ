@@ -1,11 +1,19 @@
 package ananas.waymq.droid.offline;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -141,16 +149,21 @@ final class OfflineCoreImpl extends OfflineCore implements IOfflineCore {
 		json.put("column_amount", money);
 		json.put("timestamp", now);
 
-		String today = "no_impl_today";
+		File path = this.getSignPathByMemberId(id);
 
-		File path = this.getWorkingPath();
-		path = new File(path, today + "/" + id + ".json");
 		try {
 			Helper.saveJSON(path, json);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	private File getSignPathByMemberId(String id) {
+		String today = "no_impl_today";
+		File path = this.getWorkingPath();
+		path = new File(path, today + "/" + id + ".json");
+		return path;
 	}
 
 	static class Helper {
@@ -169,6 +182,24 @@ final class OfflineCoreImpl extends OfflineCore implements IOfflineCore {
 			wtr.flush();
 			wtr.close();
 			out.close();
+		}
+
+		public static JSONObject loadJSON(File file) throws IOException {
+			if (!file.exists())
+				return null;
+			InputStream in = new FileInputStream(file);
+			Reader rdr = new InputStreamReader(in, "UTF-8");
+			StringBuilder sb = new StringBuilder();
+			char[] buf = new char[128];
+			for (;;) {
+				int cc = rdr.read(buf);
+				if (cc < 0)
+					break;
+				sb.append(buf, 0, cc);
+			}
+			rdr.close();
+			in.close();
+			return JSON.parseObject(sb.toString());
 		}
 
 	}
@@ -201,6 +232,46 @@ final class OfflineCoreImpl extends OfflineCore implements IOfflineCore {
 		// 0);
 		// Editor edit = sp.edit();
 
+	}
+
+	@Override
+	public ISign[] listSigns() {
+		class FF implements FilenameFilter {
+
+			private String _suf;
+
+			public FF(String suffix) {
+				this._suf = suffix;
+			}
+
+			@Override
+			public boolean accept(File dir, String filename) {
+				return filename.endsWith(_suf);
+			}
+		}
+
+		File path = this.getSignPathByMemberId("");
+		File dir = path.getParentFile();
+		String suffix = path.getName();
+
+		FilenameFilter filter = new FF(suffix);
+		String[] list = dir.list(filter);
+		Arrays.sort(list);
+		// load
+		List<ISign> list2 = new ArrayList<ISign>();
+		for (String fname : list) {
+			File file = new File(dir, fname);
+			JSONObject json = null;
+			try {
+				json = Helper.loadJSON(file);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			SignImpl rec = new SignImpl();
+			rec.load(json);
+			list2.add(rec);
+		}
+		return list2.toArray(new ISign[list2.size()]);
 	}
 
 }

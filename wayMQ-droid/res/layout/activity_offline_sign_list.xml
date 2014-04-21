@@ -1,0 +1,59 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#7f7f7f"
+    android:orientation="vertical"
+    tools:context=".StartActivity" >
+
+    <LinearLayout
+        android:id="@+id/box_head"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:background="#222222"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/button_select_member"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="#00000000"
+            android:text="签到列表"
+            android:textColor="#dddddd"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:background="#111111"
+            android:padding="5dp" />
+
+        <Button
+            android:id="@+id/button_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="#00000000"
+            android:padding="10dp"
+            android:text="..."
+            android:textColor="#dddddd"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/box_body"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#ffffff"
+        android:orientation="vertical" >
+
+        <ListView
+            android:id="@+id/list_sign"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#707070" >
+        </ListView>
+    </LinearLayout>
+
+</LinearLayout>
