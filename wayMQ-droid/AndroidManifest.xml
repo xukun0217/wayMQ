@@ -27,13 +27,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity android:name="OfflineMemberAddActivity" />
-        <activity android:name="MemberInfoActivity" />
         <activity android:name="OfflineMemberListActivity" />
+        <activity android:name="OfflineSignActivity" />
+        <activity android:name="OfflineSignListActivity" />
+        
+        
+        <activity android:name="MemberInfoActivity" />
         <activity android:name="SmsLoginActivity" />
         <activity android:name="SmsRegisterActivity" />
         <activity android:name="DebugActivity" />
-        <activity android:name="OfflineSignActivity" />
         <activity android:name="EventActivity" />
         <activity android:name="WebViewActivity" />
 
@@ -43,10 +47,10 @@
             </intent-filter>
         </receiver>
 
-        <service android:name="WayMQService" >
-        </service>
-        <service android:name="WebViewService" >
-        </service>
+        <service android:name="WayMQService" />
+        
+        <service android:name="WebViewService" />
+        
     </application>
 
 </manifest>

@@ -17,6 +17,8 @@ public interface IOfflineCore {
 
 	void doMemberSign(String id, String name, int count, int money);
 
+	ISign[] listSigns();
+
 	// path manager
 
 	File getWorkingPath();

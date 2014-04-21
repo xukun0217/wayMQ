@@ -4,6 +4,8 @@ import ananas.waymq.droid.offline.IMemberInfo;
 import ananas.waymq.droid.offline.IOfflineCore;
 import ananas.waymq.droid.offline.OfflineCore;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -16,6 +18,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -26,6 +29,8 @@ public class OfflineMemberListActivity extends Activity implements TextWatcher,
 	private ListView _list_members;
 	private EditText _edit_search;
 	private IOfflineCore _core;
+	private Button _btn_clr_edit;
+	private ImageButton _btn_sign_list;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +40,8 @@ public class OfflineMemberListActivity extends Activity implements TextWatcher,
 		// ui components
 		this._list_members = (ListView) this.findViewById(R.id.list_members);
 		this._btn_add = (Button) this.findViewById(R.id.btn_add);
+		this._btn_clr_edit = (Button) this.findViewById(R.id.button_clear_edit);
+		this._btn_sign_list = (ImageButton) this.findViewById(R.id.button_back);
 		this._edit_search = (EditText) this.findViewById(R.id.edit_search);
 		// event handler
 		if (this._btn_add != null)
@@ -44,10 +51,39 @@ public class OfflineMemberListActivity extends Activity implements TextWatcher,
 					OfflineMemberListActivity.this.onClickButtonAdd();
 				}
 			});
+		if (this._btn_clr_edit != null) {
+			this._btn_clr_edit.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					OfflineMemberListActivity.this.onClickButtonClearEdit();
+				}
+			});
+		}
+		if (this._btn_sign_list != null) {
+			this._btn_sign_list.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					OfflineMemberListActivity.this.onClickButtonSignList();
+				}
+			});
+		}
 		this._edit_search.addTextChangedListener(this);
 		this._list_members.setOnItemClickListener(this);
 		// init
 		this._core = OfflineCore.newInstance(this);
+
+	}
+
+	protected void onClickButtonSignList() {
+		Intent intent = new Intent(this, OfflineSignListActivity.class);
+		this.startActivity(intent);
+	}
+
+	protected void onClickButtonClearEdit() {
+
+		this.__find_members(null);
+		this._edit_search.setText("");
+		this._edit_search.forceLayout();
 
 	}
 
@@ -128,8 +164,8 @@ public class OfflineMemberListActivity extends Activity implements TextWatcher,
 	protected void onResume() {
 		super.onResume();
 
-		this._edit_search.setText("");
-		this.__find_members(null);
+		String id = this._edit_search.getText().toString();
+		this.__find_members(id);
 
 	}
 
@@ -177,6 +213,33 @@ public class OfflineMemberListActivity extends Activity implements TextWatcher,
 
 		}
 
+	}
+
+	@Override
+	public void onBackPressed() {
+		// super.onBackPressed();
+
+		DialogInterface.OnClickListener hYes = new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+
+			}
+		};
+
+		DialogInterface.OnClickListener hNo = new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// do nothing
+			}
+		};
+
+		AlertDialog dlg = (new AlertDialog.Builder(this))
+				.setNegativeButton("No", hNo).setPositiveButton("Yes", hYes)
+				.setMessage("Are you sure to exit now ?").create();
+		dlg.show();
 	}
 
 }
