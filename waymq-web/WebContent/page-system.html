@@ -19,7 +19,7 @@
 <script type="text/javascript">
 	function doCreateGroup() {
 		var name = $("#group_name").val();
-		var url = new URLBuilder("Group", "create");
+		var url = new URLBuilder("WAYMQ", "newGroup");
 		url.name = name;
 		$.getJSON(url.toString(), function(json, status, xhr) {
 			var str = JSON.stringify(json);

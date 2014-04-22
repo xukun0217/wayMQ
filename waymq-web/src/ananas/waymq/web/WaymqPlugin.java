@@ -12,6 +12,7 @@ import ananas.waymq.web.controller.WaymqController;
 import ananas.waymq.web.model.EventHODAO;
 import ananas.waymq.web.model.GroupHODAO;
 import ananas.waymq.web.model.GroupNameHODAO;
+import ananas.waymq.web.model.JoinListHODAO;
 
 public class WaymqPlugin implements PluginInfo, PluginFactory {
 
@@ -62,6 +63,7 @@ public class WaymqPlugin implements PluginInfo, PluginFactory {
 			daoman.put(new EventHODAO());
 			daoman.put(new GroupHODAO());
 			daoman.put(new GroupNameHODAO());
+			daoman.put(new JoinListHODAO());
 
 		}
 

@@ -6,6 +6,7 @@ import ananas.sf4lib.server.store.StoreTransaction;
 import ananas.waymq.web.model.Event;
 import ananas.waymq.web.model.Group;
 import ananas.waymq.web.model.GroupName;
+import ananas.waymq.web.model.JoinList;
 import ananas.xgit4.HashID;
 
 import com.alibaba.fastjson.JSONObject;
@@ -94,11 +95,17 @@ public class WaymqController implements JRPController {
 		event.s_prev_event = group.m_event_current;
 		event = (Event) tran.insert(event);
 
+		// new join list
+		JoinList jlist = new JoinList();
+		jlist.s_owner_event = event.id;
+		jlist = (JoinList) tran.insert(jlist);
+
 		// mutable
 		event.m_title = title;
 		event.m_content = content;
 		event.m_time_open = Long.parseLong(t_open);
 		event.m_time_create = System.currentTimeMillis();
+		event.m_join_list = jlist.id;
 		group.m_event_current = event.id;
 
 		// result

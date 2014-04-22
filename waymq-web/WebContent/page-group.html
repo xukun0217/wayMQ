@@ -97,6 +97,13 @@
 
 	function loadCurrentEventInfo(id) {
 
+		if (id == null) {
+			$("#subview_current_event").hide();
+			return;
+		} else {
+			$("#subview_current_event").show();
+		}
+
 		var url = new URLBuilder("Event", "getInfo");
 		url.id = id;
 
@@ -217,15 +224,16 @@
 				<!-- link to settings -->
 				<a id="link_detail_show_new_event" href="#">新建活动</a>
 
-
-				<h2 class="form-signin-heading">最新活动</h2>
-				<div>
-					<div id="current_event_title"></div>
+				<div id="subview_current_event">
+					<h2 class="form-signin-heading">最新活动</h2>
 					<div>
-						<span>开始时间：</span> <span id="current_event_time"></span>
-					</div>
-					<div>
-						<a id="link_current_event_detail" href="#">(详情)</a>
+						<div id="current_event_title"></div>
+						<div>
+							<span>开始时间：</span> <span id="current_event_time"></span>
+						</div>
+						<div>
+							<a id="link_current_event_detail" href="#">(详情)</a>
+						</div>
 					</div>
 				</div>
 
