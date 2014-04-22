@@ -18,6 +18,7 @@ public class EventHODAO extends AbstractDao4HOJson<Event> {
 		String m_time_open = "time_open";
 		String m_time_close = "time_close";
 		String m_time_create = "time_create";
+		String m_join_list = "join_list";
 	}
 
 	public EventHODAO() {
@@ -52,6 +53,7 @@ public class EventHODAO extends AbstractDao4HOJson<Event> {
 			json.put(Key.m_time_close, obj.m_time_close);
 			json.put(Key.m_time_open, obj.m_time_open);
 			json.put(Key.m_time_create, obj.m_time_create);
+			json.put(Key.m_join_list, Helper.idToString(obj.m_join_list));
 			return json;
 		}
 
@@ -72,6 +74,7 @@ public class EventHODAO extends AbstractDao4HOJson<Event> {
 				obj.m_time_create = mutable.getLongValue(Key.m_time_create);
 				obj.m_time_open = mutable.getLongValue(Key.m_time_open);
 				obj.m_time_close = mutable.getLongValue(Key.m_time_close);
+				obj.m_join_list = Helper.getId(mutable, Key.m_join_list);
 			}
 		}
 

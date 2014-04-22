@@ -126,8 +126,20 @@
 			$("#text_event_content_detail").text(data.detail);
 
 			refreshGroupInfo(data.owner_group);
+			refreshEventJoinList(eid);
 		});
 
+	}
+
+	function refreshEventJoinList(eid) {
+		var ub = new URLBuilder("Event", "getJoinTable");
+		ub.id = eid;
+		var url = ub.toString("do");
+		$.getJSON(url, function(json) {
+
+			showJsonIfNotSuccess(json);
+
+		});
 	}
 
 	function gotoGroup() {

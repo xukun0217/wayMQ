@@ -9,13 +9,13 @@ public class JoinList {
 
 	public static class Item {
 
-		String nickname;
-		int count;
-		boolean join;
-		String phone; // last 6 digits only
+		public String nickname;
+		public int count;
+		public boolean join;
+		public String phone; // last 6 digits only
 
-		long last_modified;
-		long first_modified;
+		public long last_modified;
+		public long first_modified;
 
 	}
 

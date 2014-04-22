@@ -115,6 +115,7 @@ public class WaymqController implements JRPController {
 		// commit
 		tran.update(event);
 		tran.update(group);
+		tran.update(jlist);
 		tran.commit();
 	}
 
