@@ -56,6 +56,7 @@
 		var phone = $("#edit_join_event_phone").val();
 		var nickname = $("#edit_join_event_nickname").val();
 		var count = $("#edit_join_event_count").val();
+		phone = checkPhoneId(phone);
 
 		if (phone == null) {
 			alert("请输入有效的手机号！");
@@ -70,7 +71,7 @@
 			return;
 		}
 
-		alert("报名信息\n\n电话:" + phone + "\n昵称:" + nickname + "\n人数:" + count);
+		//	alert("报名信息\n\n电话:" + phone + "\n昵称:" + nickname + "\n人数:" + count);
 
 		var url = new URLBuilder("Event", "join");
 		url.phone = phone;
@@ -88,11 +89,25 @@
 
 	}
 	function doExitEvent() {
-
+		var eid = getURLQueryParameter(document.URL, "id");
 		var phone = $("#edit_exit_event_phone").val();
-
-		alert("exit\nphone:" + phone);
-
+		phone = checkPhoneId(phone);
+		//	alert("exit\nphone:" + phone);
+		if (phone == null) {
+			alert("请输入有效的手机号！");
+			return;
+		}
+		var url = new URLBuilder("Event", "exit");
+		url.phone = phone;
+		url.id = eid;
+		$.getJSON(url.toString(), function(json) {
+			showJsonIfNotSuccess(json);
+			if (json.success) {
+				alert("已取消报名！");
+				refreshEventInfo();
+				onClickButtonShowDetail();
+			}
+		});
 	}
 
 	function refreshGroupInfo(id) {
@@ -139,6 +154,40 @@
 
 			showJsonIfNotSuccess(json);
 
+			var table = json.join_table;
+			var temp_item = $("#list_join_item_temp");
+			var temp_list = $("#list_join_list_temp");
+			var join_list = $("#list_join_list");
+
+			temp_list.hide();
+
+			// [ 已退出 , 123456 ] 
+			var array = new Array();
+
+			for (key in table) {
+				var it = table[key];
+				if (it.join) {
+					array.push("[x" + it.count + "] " + it.nickname);
+				} else {
+					array.push("[已取消报名] " + it.nickname);
+				}
+			}
+
+			array.sort();
+
+			if (array.length > 0) {
+				join_list.html("");
+			} else {
+				join_list.html("<div>目前还没有人报名:-(</div>");
+			}
+
+			for ( var i = 0; i < array.length; i++) {
+				var s = array[i];
+				var it = temp_item.clone();
+				it.html(s);
+				join_list.append(it);
+			}
+
 		});
 	}
 
@@ -164,6 +213,7 @@
 
 		$("#button_join_event").click(doJoinEvent);
 		$("#button_exit_event").click(doExitEvent);
+
 	}
 
 	$(document).ready(function() {
@@ -237,12 +287,10 @@
 
 				<h2 class="form-signin-heading">报名名单</h2>
 
-				<ol id="list_join_event">
-
-					<li>first</li>
-					<li>second</li>
-					<li>third</li>
-					<li>fouth</li>
+				<ol id="list_join_list">
+				</ol>
+				<ol id="list_join_list_temp">
+					<li id="list_join_item_temp">无人参与</li>
 				</ol>
 
 			</div>
@@ -304,6 +352,7 @@
 				<div>微麦可#活动终结者</div>
 				<div>(C)2014 puyatech.com</div>
 			</div>
+
 
 		</form>
 	</div>

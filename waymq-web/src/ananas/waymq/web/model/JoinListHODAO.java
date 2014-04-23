@@ -23,12 +23,12 @@ public class JoinListHODAO extends AbstractDao4HOJson<JoinList> {
 
 	interface KeyJoin {
 
-		String join = null;
-		String nickname = null;
-		String phone = null;
-		String last_modified = null;
-		String first_modified = null;
-		String count = null;
+		String join = "join";
+		String nickname = "nickname";
+		String phone = "phone_id";
+		String last_modified = "last_modified";
+		String first_modified = "first_modified";
+		String count = "count";
 
 	}
 

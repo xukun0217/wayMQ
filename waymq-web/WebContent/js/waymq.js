@@ -26,6 +26,42 @@ function getURLQueryParameter(url, paramName) {
 }
 
 /*******************************************************************************
+ * checkPhoneId
+ */
+
+function checkPhoneId(phone) {
+
+	var s = "" + phone;
+	var sb1 = "";
+	var sb2 = "000000";
+	var len = s.length;
+	for ( var i = 0; i < len; ++i) {
+		var ch = s.charAt(i);
+		if (ch == ' ') {
+			// skip
+		} else if (ch == '\t') {
+			// skip
+		} else if ('0' <= ch && ch <= '9') {
+			sb2 = sb2 + ch;
+		} else {
+			sb1 = sb1 + ch;
+		}
+	}
+	if (sb1.length > 0)
+		return null;
+	len = sb2.length;
+	switch (len) {
+	case (11 + 6):
+		break;
+	case (5 + 6):
+		break;
+	default:
+		return null;
+	}
+	return sb2.substring(len - 6, len);
+}
+
+/*******************************************************************************
  * URLBuilder
  */
 
@@ -77,6 +113,37 @@ function DateTime() {
 	this.gmt = date.getTime();
 	return this;
 }
+
+DateTime.prototype.parse = function(str) {
+
+	str = str + "(end)";
+
+	var array = new Array();
+	var sb = "";
+	var len = str.length;
+	for ( var i = 0; i < len; ++i) {
+		var ch = str.charAt(i);
+		if ('0' <= ch && ch <= '9') {
+			sb = sb + ch;
+		} else {
+			if (sb.length > 0) {
+				array.push(sb);
+				sb = "";
+			}
+		}
+	}
+	var yy = parseInt(array[0]);
+	var mm = parseInt(array[1]) - 1;
+	var dd = parseInt(array[2]);
+	var h = parseInt(array[3]);
+	var m = parseInt(array[4]);
+	var s = parseInt(array[5]);
+
+	var date = new Date();
+	date.setFullYear(yy, mm, dd);
+	date.setHours(h, m, s, 0);
+	return date.getTime();
+};
 
 DateTime.prototype.toString = function() {
 	var s1 = this.toDateString();

@@ -161,6 +161,20 @@
 
 	}
 
+	function parseTimeToLong(str) {
+		var dt = new DateTime();
+		return dt.parse(str);
+	}
+
+	function initComponents() {
+
+		{
+			// edit_time
+			var now = new DateTime();
+			$("#edit_time").val(now.toString());
+		}
+	}
+
 	function createEvent() {
 
 		var group = getURLQueryParameter(document.URL, "id");
@@ -168,12 +182,17 @@
 		var time = $("#edit_time").val();
 		var content = $("#edit_content").val();
 
+		var long_time = parseTimeToLong(time);
+		var date = new DateTime();
+		date.gmt = long_time;
+		$("#edit_time").val(date.toString());
+
 		var url = new URLBuilder("WAYMQ", "newEvent");
 		url["group"] = group;
 		url["title"] = title;
-		url["time_open"] = 0; //  time;
+		url["time_open"] = long_time;
 		url["content"] = content;
-		$.getJSON(url.toString("do"), function(data) {
+		$.getJSON(url.toString("do"), function(json) {
 
 			showJsonIfNotSuccess(json);
 
@@ -189,6 +208,7 @@
 		setupButtonHandler();
 		loadGroupInfo();
 		checkGroupExists();
+		initComponents();
 
 		showView("#view_group_detail");
 
