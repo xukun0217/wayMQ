@@ -56,6 +56,11 @@
 		var phone = $("#edit_join_event_phone").val();
 		var nickname = $("#edit_join_event_nickname").val();
 		var count = $("#edit_join_event_count").val();
+
+		localStorage.nickname = nickname;
+		localStorage.phone = phone;
+		$("#edit_exit_event_phone").val(phone);
+
 		phone = checkPhoneId(phone);
 
 		if (phone == null) {
@@ -221,6 +226,14 @@
 		showView("#view_event_detail");
 		setupButton();
 		refreshEventInfo();
+
+		{
+			// init edit
+			$("#edit_exit_event_phone").val(localStorage.phone);
+			$("#edit_join_event_phone").val(localStorage.phone);
+			$("#edit_join_event_nickname").val(localStorage.nickname);
+			$("#edit_join_event_count").val("1");
+		}
 
 	});
 </script>

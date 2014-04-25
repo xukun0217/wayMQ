@@ -73,6 +73,33 @@ function URLBuilder(aClass, aMethod) {
 	return this;
 }
 
+URLBuilder.prototype.doPost = function(base, callback) {
+
+	var func = callback;
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", base, true);
+	xhr.onreadystatechange = function(e) {
+
+		if (xhr.readyState == 4) {
+			if (xhr.status == 200) {
+				var str = xhr.responseText;
+				var json = $.parseJSON(str);
+				func(json, xhr.status, xhr);
+			} else {
+				alert("HTTP " + xhr.status + " " + xhr.statusText);
+			}
+		}
+	};
+	var data = JSON.stringify(this);
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send(data);
+};
+
+URLBuilder.prototype.doGet = function(base, callback) {
+	var url = this.toString(base);
+	$.getJSON(url, callback);
+};
+
 URLBuilder.prototype.toString = function(base) {
 	if (base != null) {
 		var i1 = base.indexOf("?", 0);
@@ -151,6 +178,18 @@ DateTime.prototype.toString = function() {
 	return s1 + " " + s2;
 };
 
+var day_table = null;
+
+function dayToString(index) {
+	var table = day_table;
+	if (table == null) {
+		// table = new Object();
+		table = [ "日", "一", "二", "三", "四", "五", "六" ];
+		day_table = table;
+	}
+	return table[index];
+}
+
 DateTime.prototype.toDateString = function() {
 	var time = this.gmt;
 	var t = time + this.zone_adjust;
@@ -159,7 +198,11 @@ DateTime.prototype.toDateString = function() {
 	var y = date.getUTCFullYear();
 	var m = date.getUTCMonth() + 1;
 	var d = date.getUTCDate();
-	return y + "-" + m + "-" + d;
+
+	var day = date.getUTCDay();
+	day = dayToString(day);
+
+	return y + "-" + m + "-" + d + "(" + day + ")";
 };
 
 DateTime.prototype.toTimeInDayString = function() {

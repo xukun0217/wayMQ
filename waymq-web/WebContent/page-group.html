@@ -84,7 +84,7 @@
 		url["title"] = title;
 		url["description"] = description;
 
-		$.getJSON(url.toString(), function(json) {
+		url.doPost("do", function(json) {
 			showJsonIfNotSuccess(json);
 			if (json.success) {
 				alert("设置成功!");
@@ -107,7 +107,7 @@
 		var url = new URLBuilder("Event", "getInfo");
 		url.id = id;
 
-		$.getJSON(url.toString(), function(json, status, xhr) {
+		url.doPost("do", function(json, status, xhr) {
 			showJsonIfNotSuccess(json);
 
 			var open_time = new DateTime();
@@ -117,6 +117,7 @@
 			$("#current_event_title").text(json.title);
 
 			global.current_event_id = json.event_id;
+			tryGotoEvent();
 
 		});
 
@@ -127,7 +128,7 @@
 		var id = getURLQueryParameter(document.URL, "id");
 		var url = new URLBuilder("Group", "getInfo");
 		url.id = id;
-		$.getJSON(url.toString(), function(json, status, xhr) {
+		url.doPost("do", function(json, status, xhr) {
 
 			showJsonIfNotSuccess(json);
 
@@ -149,7 +150,7 @@
 		var id = getURLQueryParameter(document.URL, "id");
 		var url = new URLBuilder("Group", "exists");
 		url.id = id;
-		$.getJSON(url.toString(), function(json, status, xhr) {
+		url.doPost("do", function(json, status, xhr) {
 			showJsonIfNotSuccess(json);
 			if (json.success) {
 				if (!json.exists) {
@@ -192,7 +193,7 @@
 		url["title"] = title;
 		url["time_open"] = long_time;
 		url["content"] = content;
-		$.getJSON(url.toString("do"), function(json) {
+		url.doPost("do", function(json) {
 
 			showJsonIfNotSuccess(json);
 
@@ -203,12 +204,27 @@
 
 	}
 
+	function initForAdmin() {
+		var admin = getURLQueryParameter(document.URL, "admin");
+		if (admin != "true") {
+			$("#subview_settings").hide();
+		}
+	}
+
+	function tryGotoEvent() {
+		var goto_event = getURLQueryParameter(document.URL, "goto_event");
+		if (goto_event == "true") {
+			gotoCurrentEvent();
+		}
+	}
+
 	$(document).ready(function() {
 
 		setupButtonHandler();
 		loadGroupInfo();
 		checkGroupExists();
 		initComponents();
+		initForAdmin();
 
 		showView("#view_group_detail");
 
@@ -240,12 +256,16 @@
 			<!-- detail  info -->
 			<div id="view_group_detail">
 
-				<!-- link to settings -->
-				<a id="link_detail_show_settings" href="#">设置</a>|
-				<!-- link to settings -->
-				<a id="link_detail_show_new_event" href="#">新建活动</a>
+				<div id="subview_settings">
+					<!-- link to settings -->
+					<a id="link_detail_show_settings" href="#">设置</a>|
+					<!-- link to settings -->
+					<a id="link_detail_show_new_event" href="#">新建活动</a>
+				</div>
+
 
 				<div id="subview_current_event">
+
 					<h2 class="form-signin-heading">最新活动</h2>
 					<div>
 						<div id="current_event_title"></div>
@@ -260,7 +280,6 @@
 
 				<h2 class="form-signin-heading">兴趣组简介</h2>
 				<div id="info_description"></div>
-
 			</div>
 
 
