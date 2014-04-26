@@ -107,7 +107,7 @@
 		var url = new URLBuilder("Event", "getInfo");
 		url.id = id;
 
-		url.doPost("do", function(json, status, xhr) {
+		url.doGet("do", function(json, status, xhr) {
 			showJsonIfNotSuccess(json);
 
 			var open_time = new DateTime();
@@ -128,7 +128,7 @@
 		var id = getURLQueryParameter(document.URL, "id");
 		var url = new URLBuilder("Group", "getInfo");
 		url.id = id;
-		url.doPost("do", function(json, status, xhr) {
+		url.doGet("do", function(json, status, xhr) {
 
 			showJsonIfNotSuccess(json);
 

@@ -91,8 +91,26 @@ URLBuilder.prototype.doPost = function(base, callback) {
 		}
 	};
 	var data = JSON.stringify(this);
+	data = this.escape(data);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send(data);
+};
+
+URLBuilder.prototype.escape = function(str) {
+	str = "" + str;
+	var len = str.length;
+	var ret = "";
+	for ( var i = 0; i < len; ++i) {
+		var ch = str.charCodeAt(i);
+		if (ch < 128) {
+			var ch2 = str.charAt(i);
+			ret += ch2;
+		} else {
+			var ch2 = ch.toString(16);
+			ret += ("&#x" + ch2 + ";");
+		}
+	}
+	return ret;
 };
 
 URLBuilder.prototype.doGet = function(base, callback) {
