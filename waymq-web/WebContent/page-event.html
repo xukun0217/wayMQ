@@ -20,6 +20,7 @@
 <script type="text/javascript">
 	var god = new Object();
 	god.owner_group_id = null;
+	god.frozen_timestamp = -1;
 
 	function showJsonIfNotSuccess(json) {
 		if (json.success)
@@ -40,9 +41,15 @@
 	}
 
 	function onClickButtonShowJoin() {
+		if (hasFrozen(true)) {
+			return;
+		}
 		showView("#view_join_event");
 	}
 	function onClickButtonShowExit() {
+		if (hasFrozen(true)) {
+			return;
+		}
 		showView("#view_exit_event");
 	}
 	function onClickButtonShowDetail() {
@@ -50,6 +57,10 @@
 	}
 
 	function doJoinEvent() {
+
+		if (hasFrozen(true)) {
+			return;
+		}
 
 		var eid = getURLQueryParameter(document.URL, "id");
 
@@ -93,7 +104,22 @@
 		});
 
 	}
+
+	function hasFrozen(showAlert) {
+		var ft = god.frozen_timestamp;
+		var dtime = new DateTime();
+		var now = dtime.gmt;
+		var ret = (ft < now);
+		if (ret && showAlert) {
+			alert("噢，不~已经超过报名截止时间！  :-(");
+		}
+		return ret;
+	}
+
 	function doExitEvent() {
+		if (hasFrozen(true)) {
+			return;
+		}
 		var eid = getURLQueryParameter(document.URL, "id");
 		var phone = $("#edit_exit_event_phone").val();
 		phone = checkPhoneId(phone);
@@ -127,6 +153,17 @@
 		});
 	}
 
+	function calcFrozenTimeByOpenTime(open_time) {
+		var dt = (3600 * 4) + (60 * 10); // 4h,10min
+		var ret = open_time - (1000 * dt);
+		{
+			var time = new DateTime();
+			time.gmt = ret;
+			$("#text_detail_frozen_time").text(time.toString());
+		}
+		return ret;
+	}
+
 	function refreshEventInfo() {
 
 		var url = document.URL;
@@ -140,6 +177,7 @@
 
 			var time_open = new DateTime();
 			time_open.gmt = data.time_open;
+			god.frozen_timestamp = calcFrozenTimeByOpenTime(data.time_open);
 
 			$("#text_overview_open_time").text(time_open.toString());
 			$("#text_overview_event_title").text(data.title);
@@ -293,6 +331,11 @@
 					<a id="button_show_view_join" href="#" style="font-size: 30px">猛戳报名！</a>
 					<span>或</span> <a id="button_show_view_exit" href="#">取消报名</a>
 				</div>
+
+				<div>
+					<span>报名截止时间：</span><span id="text_detail_frozen_time">(frozen-time)</span>
+				</div>
+
 
 				<h2 class="form-signin-heading">活动详情</h2>
 
