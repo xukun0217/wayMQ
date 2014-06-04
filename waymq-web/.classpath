@@ -6,7 +6,6 @@
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/sf4lib-lib"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/sf4lib-server"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/sf4lib-webserver"/>
-	<classpathentry exported="true" kind="lib" path="/xgit4/lib/fastjson-1.1.31.jar"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/xgit4"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/xgit4-lib"/>
@@ -16,5 +15,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0"/>
+	<classpathentry kind="lib" path="/maven-jar-repo/lib/fastjson-1.1.31.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
