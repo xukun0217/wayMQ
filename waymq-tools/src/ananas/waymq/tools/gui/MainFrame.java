@@ -80,8 +80,8 @@ public class MainFrame extends JFrame {
 
 	private void do_cmd_count() {
 		Counter counter = new Counter();
-		counter.doFindDir();
-		counter.doLoadRec();
+		counter.doAll();
+		System.out.println("Done.");
 	}
 
 	private void do_cmd_import() {

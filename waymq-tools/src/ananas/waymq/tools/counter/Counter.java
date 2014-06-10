@@ -10,13 +10,32 @@ public class Counter {
 		DirFinder df = new DirFinder();
 		df.find();
 		this._rec_dir = df.getResultDir();
-
-		System.out.println("Done.");
 	}
 
 	public void doLoadRec() {
-		// TODO Auto-generated method stub
 
+		HtmlFinder hf = new HtmlFinder();
+		// RecLoader ldr = new RecLoader();
+		hf.findHTML(this._rec_dir, new HtmlFinder.Callback() {
+
+			@Override
+			public void onFile(File file) {
+				// TODO Auto-generated method stub
+
+				System.out.println("find HTML " + file);
+			}
+
+			@Override
+			public void onDir(File dir) {
+				// TODO Auto-generated method stub
+			}
+		});
+
+	}
+
+	public void doAll() {
+		this.doFindDir();
+		this.doLoadRec();
 	}
 
 }

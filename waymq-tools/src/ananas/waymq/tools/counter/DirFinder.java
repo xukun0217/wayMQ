@@ -1,6 +1,8 @@
 package ananas.waymq.tools.counter;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Properties;
@@ -10,6 +12,8 @@ public class DirFinder {
 	interface PropertiesAcceptor {
 		boolean accept(Properties properties);
 	}
+
+	private File _result_dir;
 
 	public void find() {
 
@@ -27,11 +31,12 @@ public class DirFinder {
 
 					@Override
 					public boolean accept(Properties properties) {
-						// TODO Auto-generated method stub
-						return false;
+						String node = properties.getProperty("node", "default");
+						return node.equals("events");
 					}
 				});
-
+		System.out.println("find events in dir " + events);
+		this._result_dir = events.getParentFile();
 	}
 
 	private File findDown(String target, File dir, PropertiesAcceptor acc,
@@ -77,11 +82,16 @@ public class DirFinder {
 	}
 
 	private Properties loadProperties(File file) {
-
-		System.out.println("load properties " + file);
-
-		// TODO Auto-generated method stub
-		return null;
+		Properties pro = new Properties();
+		try {
+			System.out.println("load properties " + file);
+			InputStream in = new FileInputStream(file);
+			pro.load(in);
+			in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return pro;
 	}
 
 	private File getBase() {
@@ -97,8 +107,7 @@ public class DirFinder {
 	}
 
 	public File getResultDir() {
-		// TODO Auto-generated method stub
-		return null;
+		return this._result_dir;
 	}
 
 }
