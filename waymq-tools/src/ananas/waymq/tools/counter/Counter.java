@@ -1,6 +1,7 @@
 package ananas.waymq.tools.counter;
 
 import java.io.File;
+import java.util.List;
 
 public class Counter {
 
@@ -14,6 +15,8 @@ public class Counter {
 
 	public void doLoadRec() {
 
+		final RecordSet rs = new RecordSet();
+
 		HtmlFinder hf = new HtmlFinder();
 		// RecLoader ldr = new RecLoader();
 		hf.findHTML(this._rec_dir, new HtmlFinder.Callback() {
@@ -23,6 +26,12 @@ public class Counter {
 				// TODO Auto-generated method stub
 
 				System.out.println("find HTML " + file);
+				RecLoader ldr = new RecLoader();
+				List<BasePaymentItem> list = ldr.loadHtmlRec(file);
+				for (BasePaymentItem item : list) {
+					rs.add(item);
+				}
+
 			}
 
 			@Override
@@ -30,6 +39,8 @@ public class Counter {
 				// TODO Auto-generated method stub
 			}
 		});
+
+		System.out.println(rs);
 
 	}
 

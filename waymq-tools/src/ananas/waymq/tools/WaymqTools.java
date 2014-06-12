@@ -5,7 +5,7 @@ import ananas.waymq.tools.gui.MainFrame;
 public class WaymqTools {
 
 	public static void main(String[] arg) {
-		boolean old_style = true;
+		boolean old_style = false;
 		if (old_style) {
 			EventRawDataProc proc = new EventRawDataProc();
 			javax.swing.SwingUtilities.invokeLater(proc);
