@@ -39,6 +39,18 @@ public class RecordSet {
 			this._records = new ArrayList<BasePaymentItem>();
 		}
 
+		public List<BasePaymentItem> listBasePaymentItems() {
+			return this._records;
+		}
+
+		public Long getId() {
+			return _id;
+		}
+
+		public String getName() {
+			return _name;
+		}
+
 		public void add(BasePaymentItem item) {
 			// if (_name == null)
 			_name = item.nickname;

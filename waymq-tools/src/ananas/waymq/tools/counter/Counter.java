@@ -6,6 +6,7 @@ import java.util.List;
 public class Counter {
 
 	private File _rec_dir;
+	private RecordSet _rec_set;
 
 	public void doFindDir() {
 		DirFinder df = new DirFinder();
@@ -41,12 +42,18 @@ public class Counter {
 		});
 
 		System.out.println(rs);
+		this._rec_set = rs;
 
 	}
 
 	public void doAll() {
 		this.doFindDir();
 		this.doLoadRec();
+		this.doCount();
 	}
 
+	private void doCount() {
+		RecordSetCounter rsc = new RecordSetCounter();
+		rsc.count(this._rec_set);
+	}
 }
